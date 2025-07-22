@@ -18,7 +18,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: { email: string; password: string; role?: string; gymId: string }) {
     const allowedRoles = ['admin', 'manager', 'trainer', 'member'];
-    const role = allowedRoles.includes(body.role) ? body.role as UserRole : 'member';
+    const role = allowedRoles.includes(body.role as UserRole) ? body.role as UserRole : 'member';
     return this.authService.register(body.email, body.password, role, body.gymId);
   }
 } 
