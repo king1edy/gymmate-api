@@ -1,24 +1,40 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserRole } from '../user/user.entity';
+import { UserRole } from '../user/dto/UserRole';
+import { LoginDto } from './dto/login.dto';
+import { AuthResponseDto } from './dto/auth-response.dto';
+import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    const user = await this.authService.validateUser(body.email, body.password);
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 200, description: 'User logged in successfully', type: AuthResponseDto })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
+    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
     if (!user) {
-      return { error: 'Invalid credentials' };
+      throw new UnauthorizedException('Invalid credentials');
     }
     return this.authService.login(user);
   }
 
   @Post('register')
-  async register(@Body() body: { email: string; password: string; role?: string; gymId: string }) {
+  @ApiOperation({ summary: 'Register new user' })
+  @ApiResponse({ status: 201, description: 'User registered successfully', type: AuthResponseDto })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponseDto> {
     const allowedRoles = ['admin', 'manager', 'trainer', 'member'];
-    const role = allowedRoles.includes(body.role as UserRole) ? body.role as UserRole : 'member';
-    return this.authService.register(body.email, body.password, role, body.gymId);
+    const role = allowedRoles.includes(createUserDto.role as UserRole) ? createUserDto.role as UserRole : 'member';
+    return this.authService.register(
+      createUserDto.email,
+      createUserDto.password,
+      createUserDto.role as UserRole || role,
+      createUserDto.gymId
+    );
   }
 } 

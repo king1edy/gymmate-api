@@ -8,6 +8,13 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { GymModule } from './gym/gym.module';
+import { MembershipModule } from './membership/membership.module';
+import { StaffModule } from './staff/staff.module';
+import { ClassModule } from './class/class.module';
+import { EquipmentModule } from './equipment/equipment.module';
+import { MarketingModule } from './marketing/marketing.module';
+import { AccessModule } from './access/access.module';
+import { FinancialModule } from './financial/financial.module';
 
 @Module({
   imports: [
@@ -23,12 +30,20 @@ import { GymModule } from './gym/gym.module';
         database: configService.get('database.name'),
         autoLoadEntities: true,
         synchronize: true, // Set to false in production
+        logging: true,
       }),
       inject: [ConfigService],
     }),
     UserModule,
     AuthModule,
     GymModule,
+    MembershipModule,
+    StaffModule,
+    ClassModule,
+    EquipmentModule,
+    MarketingModule,
+    AccessModule,
+    FinancialModule,
   ],
   controllers: [AppController],
   providers: [

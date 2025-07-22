@@ -1,34 +1,43 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Gym } from '../gym/gym.entity';
+import { UserRole } from './dto/UserRole';
 
-export type UserRole = 'admin' | 'manager' | 'trainer' | 'member';
-
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym, { nullable: false })
-  gym: Gym;
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
 
   @Column({ unique: true })
   email: string;
 
   @Column()
-  password: string;
-
-  @Column({ type: 'varchar', default: 'member' })
-  role: UserRole;
-
-  @Column({ default: 'active' })
-  status: string;
+  passwordHash: string;
 
   @Column({ nullable: true })
-  lastLogin: Date;
+  phoneNumber: string;
+
+  @ManyToOne(() => Gym, { eager: true })
+  gym: Gym;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.MEMBER
+  })
+  role: UserRole;
+
+  @Column({ default: true })
+  isActive: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-} 
+}
