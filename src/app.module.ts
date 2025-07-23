@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { GymModule } from './gym/gym.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 import { MembershipModule } from './membership/membership.module';
 import { StaffModule } from './staff/staff.module';
 import { ClassModule } from './class/class.module';
@@ -15,6 +16,7 @@ import { EquipmentModule } from './equipment/equipment.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { AccessModule } from './access/access.module';
 import { FinancialModule } from './financial/financial.module';
+import { TenantModule } from './tenant/tenant.module';
 
 @Module({
   imports: [
@@ -34,9 +36,11 @@ import { FinancialModule } from './financial/financial.module';
       }),
       inject: [ConfigService],
     }),
+    TenantModule,
     UserModule,
     AuthModule,
     GymModule,
+    SubscriptionModule,
     MembershipModule,
     StaffModule,
     ClassModule,

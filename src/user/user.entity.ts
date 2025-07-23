@@ -1,11 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 import { UserRole } from './dto/UserRole';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(() => Tenant)
+  tenant: Tenant;
+
+  @Column({ type: 'uuid', nullable: true })
+  tenantId: string;
 
   @Column()
   firstName: string;
