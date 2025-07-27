@@ -14,7 +14,7 @@ export class UserResponseDto {
   email: string;
 
   @ApiPropertyOptional({ description: 'User phone number' })
-  phoneNumber?: string;
+  phone?: string;
 
   @ApiProperty({ description: 'User roles' })
   roles: string[];

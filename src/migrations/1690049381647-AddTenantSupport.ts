@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddTenantSupport1690049381647 implements MigrationInterface {
-    name = 'AddTenantSupport1690049381647'
+  name = 'AddTenantSupport1690049381647';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        // Create tenant enum types
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // Create tenant enum types
+    await queryRunner.query(`
             CREATE TYPE "public"."subscription_plan_enum" AS ENUM (
                 'starter',
                 'professional',
@@ -13,7 +13,7 @@ export class AddTenantSupport1690049381647 implements MigrationInterface {
             )
         `);
 
-        await queryRunner.query(`
+    await queryRunner.query(`
             CREATE TYPE "public"."subscription_status_enum" AS ENUM (
                 'active',
                 'trialing',
@@ -23,8 +23,8 @@ export class AddTenantSupport1690049381647 implements MigrationInterface {
             )
         `);
 
-        // Create tenants table
-        await queryRunner.query(`
+    // Create tenants table
+    await queryRunner.query(`
             CREATE TABLE "tenants" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "subdomain" varchar NOT NULL,
@@ -43,13 +43,13 @@ export class AddTenantSupport1690049381647 implements MigrationInterface {
             )
         `);
 
-        // Create unique index on subdomain
-        await queryRunner.query(`
+    // Create unique index on subdomain
+    await queryRunner.query(`
             CREATE UNIQUE INDEX "IDX_tenant_subdomain" ON "tenants" ("subdomain")
         `);
 
-        // Add tenant_id to users table
-        await queryRunner.query(`
+    // Add tenant_id to users table
+    await queryRunner.query(`
             ALTER TABLE "users" 
             ADD COLUMN "tenant_id" uuid,
             ADD CONSTRAINT "FK_users_tenant" 
@@ -58,31 +58,31 @@ export class AddTenantSupport1690049381647 implements MigrationInterface {
             ON DELETE CASCADE
         `);
 
-        // Create index on tenant_id and email for users
-        await queryRunner.query(`
+    // Create index on tenant_id and email for users
+    await queryRunner.query(`
             CREATE UNIQUE INDEX "IDX_users_tenant_email" 
             ON "users" ("tenant_id", "email")
             WHERE "tenant_id" IS NOT NULL
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        // Drop indexes
-        await queryRunner.query(`DROP INDEX "IDX_users_tenant_email"`);
-        await queryRunner.query(`DROP INDEX "IDX_tenant_subdomain"`);
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // Drop indexes
+    await queryRunner.query(`DROP INDEX "IDX_users_tenant_email"`);
+    await queryRunner.query(`DROP INDEX "IDX_tenant_subdomain"`);
 
-        // Remove tenant_id from users
-        await queryRunner.query(`
+    // Remove tenant_id from users
+    await queryRunner.query(`
             ALTER TABLE "users" 
             DROP CONSTRAINT "FK_users_tenant",
             DROP COLUMN "tenant_id"
         `);
 
-        // Drop tenants table
-        await queryRunner.query(`DROP TABLE "tenants"`);
+    // Drop tenants table
+    await queryRunner.query(`DROP TABLE "tenants"`);
 
-        // Drop enum types
-        await queryRunner.query(`DROP TYPE "public"."subscription_status_enum"`);
-        await queryRunner.query(`DROP TYPE "public"."subscription_plan_enum"`);
-    }
+    // Drop enum types
+    await queryRunner.query(`DROP TYPE "public"."subscription_status_enum"`);
+    await queryRunner.query(`DROP TYPE "public"."subscription_plan_enum"`);
+  }
 }

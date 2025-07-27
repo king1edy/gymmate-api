@@ -13,10 +13,17 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
-  @ApiResponse({ status: 200, description: 'User logged in successfully', type: AuthResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User logged in successfully',
+    type: AuthResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
-    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    const user = await this.authService.validateUser(
+      loginDto.email,
+      loginDto.password,
+    );
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -25,16 +32,24 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register new user' })
-  @ApiResponse({ status: 201, description: 'User registered successfully', type: AuthResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    type: AuthResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponseDto> {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<AuthResponseDto> {
     const allowedRoles = ['admin', 'manager', 'trainer', 'member'];
-    const role = allowedRoles.includes(createUserDto.role as UserRole) ? createUserDto.role as UserRole : 'member';
+    const role = allowedRoles.includes(createUserDto.role as UserRole)
+      ? (createUserDto.role as UserRole)
+      : 'member';
     return this.authService.register(
       createUserDto.email,
       createUserDto.password,
-      createUserDto.role as UserRole || role,
-      createUserDto.gymId
+      (createUserDto.role as UserRole) || role,
+      createUserDto.gymId,
     );
   }
-} 
+}

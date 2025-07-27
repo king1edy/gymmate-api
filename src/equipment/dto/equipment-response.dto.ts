@@ -43,7 +43,9 @@ export class EquipmentResponseDto {
   @ApiPropertyOptional({ description: 'Notes about the equipment' })
   notes?: string;
 
-  @ApiProperty({ description: 'Date when the equipment was created in the system' })
+  @ApiProperty({
+    description: 'Date when the equipment was created in the system',
+  })
   createdAt: Date;
 
   @ApiProperty({ description: 'Date when the equipment was last updated' })

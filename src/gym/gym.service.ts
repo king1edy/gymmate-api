@@ -21,7 +21,7 @@ export class GymService {
 
   async findAll(): Promise<GymResponseDto[]> {
     const gyms = await this.gymRepository.find();
-    return gyms.map(gym => this.toResponseDto(gym));
+    return gyms.map((gym) => this.toResponseDto(gym));
   }
 
   async findOne(id: string): Promise<GymResponseDto> {
@@ -32,7 +32,10 @@ export class GymService {
     return this.toResponseDto(gym);
   }
 
-  async update(id: string, updateGymDto: UpdateGymDto): Promise<GymResponseDto> {
+  async update(
+    id: string,
+    updateGymDto: UpdateGymDto,
+  ): Promise<GymResponseDto> {
     const gym = await this.gymRepository.findOne({ where: { id } });
     if (!gym) {
       throw new NotFoundException(`Gym with ID ${id} not found`);

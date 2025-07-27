@@ -4,9 +4,7 @@ import { Staff } from './staff.entity';
 import { Trainer } from './trainer.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Staff, Trainer]),
-  ],
+  imports: [TypeOrmModule.forFeature([Staff, Trainer])],
   exports: [TypeOrmModule],
 })
 export class StaffModule {}

@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Gym } from '../gym/gym.entity';
 
 @Entity('lead_sources')
@@ -18,7 +25,7 @@ export class LeadSource {
   @Column()
   category: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   acquisitionCost: number;
 
   @Column({ default: true })

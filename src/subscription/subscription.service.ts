@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from './subscription.entity';
@@ -16,10 +20,16 @@ export class SubscriptionService {
     private gymRepository: Repository<Gym>,
   ) {}
 
-  async create(createSubscriptionDto: CreateSubscriptionDto): Promise<SubscriptionResponseDto> {
-    const gym = await this.gymRepository.findOne({ where: { id: createSubscriptionDto.gymId }});
+  async create(
+    createSubscriptionDto: CreateSubscriptionDto,
+  ): Promise<SubscriptionResponseDto> {
+    const gym = await this.gymRepository.findOne({
+      where: { id: createSubscriptionDto.gymId },
+    });
     if (!gym) {
-      throw new NotFoundException(`Gym with ID ${createSubscriptionDto.gymId} not found`);
+      throw new NotFoundException(
+        `Gym with ID ${createSubscriptionDto.gymId} not found`,
+      );
     }
 
     // Check if gym already has an active subscription
@@ -47,7 +57,9 @@ export class SubscriptionService {
     const subscriptions = await this.subscriptionRepository.find({
       relations: ['gym'],
     });
-    return subscriptions.map(subscription => this.toResponseDto(subscription));
+    return subscriptions.map((subscription) =>
+      this.toResponseDto(subscription),
+    );
   }
 
   async findOne(id: string): Promise<SubscriptionResponseDto> {
@@ -72,7 +84,10 @@ export class SubscriptionService {
     return this.toResponseDto(subscription);
   }
 
-  async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto): Promise<SubscriptionResponseDto> {
+  async update(
+    id: string,
+    updateSubscriptionDto: UpdateSubscriptionDto,
+  ): Promise<SubscriptionResponseDto> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { id },
       relations: ['gym'],
@@ -81,7 +96,10 @@ export class SubscriptionService {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
     }
 
-    const updatedSubscription = this.subscriptionRepository.merge(subscription, updateSubscriptionDto);
+    const updatedSubscription = this.subscriptionRepository.merge(
+      subscription,
+      updateSubscriptionDto,
+    );
     await this.subscriptionRepository.save(updatedSubscription);
     return this.toResponseDto(updatedSubscription);
   }

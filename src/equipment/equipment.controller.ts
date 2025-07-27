@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -11,10 +21,7 @@ export class EquipmentController {
 
   @Get()
   @Roles('admin', 'staff')
-  async getEquipment(
-    @Query('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getEquipment(@Query('gymId') gymId: string, @Query() filter: any) {
     return this.equipmentService.getEquipment(gymId, filter);
   }
 
@@ -32,10 +39,7 @@ export class EquipmentController {
 
   @Put(':id')
   @Roles('admin')
-  async updateEquipment(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async updateEquipment(@Param('id') id: string, @Body() data: any) {
     return this.equipmentService.updateEquipment(id, data);
   }
 
@@ -59,10 +63,7 @@ export class EquipmentController {
 
   @Post(':id/maintenance')
   @Roles('admin', 'staff')
-  async logMaintenance(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async logMaintenance(@Param('id') id: string, @Body() data: any) {
     return this.equipmentService.logMaintenance({
       ...data,
       equipment: { id },

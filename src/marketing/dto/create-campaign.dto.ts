@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID, IsOptional, IsDateString, IsArray } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  IsOptional,
+  IsDateString,
+  IsArray,
+} from 'class-validator';
 
 export class CreateCampaignDto {
   @ApiProperty({ description: 'Name of the marketing campaign' })

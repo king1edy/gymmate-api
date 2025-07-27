@@ -1,5 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsUrl, IsEmail, IsObject, IsArray, IsBoolean, IsNumber, IsIn, IsDateString, IsNotEmpty } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsUrl,
+  IsEmail,
+  IsObject,
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsIn,
+  IsDateString,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateGymDto {
   @ApiProperty({ example: 'Fitness Plus' })
@@ -65,20 +77,26 @@ export class CreateGymDto {
   @ApiProperty({
     example: {
       monday: { open: '06:00', close: '22:00' },
-      tuesday: { open: '06:00', close: '22:00' }
-    }
+      tuesday: { open: '06:00', close: '22:00' },
+    },
   })
   @IsObject()
   @IsOptional()
   businessHours?: any;
 
-  @ApiProperty({ example: 'starter', enum: ['starter', 'professional', 'enterprise'] })
+  @ApiProperty({
+    example: 'starter',
+    enum: ['starter', 'professional', 'enterprise'],
+  })
   @IsString()
   @IsIn(['starter', 'professional', 'enterprise'])
   @IsOptional()
   subscriptionPlan?: string;
 
-  @ApiProperty({ example: 'active', enum: ['active', 'inactive', 'pending', 'cancelled'] })
+  @ApiProperty({
+    example: 'active',
+    enum: ['active', 'inactive', 'pending', 'cancelled'],
+  })
   @IsString()
   @IsIn(['active', 'inactive', 'pending', 'cancelled'])
   @IsOptional()

@@ -32,7 +32,9 @@ export class FinancialService {
 
   async createInvoice(data: any) {
     const invoice = this.invoiceRepository.create(data);
-    const savedInvoice = await this.invoiceRepository.save(invoice) as Invoice | Invoice[];
+    const savedInvoice = (await this.invoiceRepository.save(invoice)) as
+      | Invoice
+      | Invoice[];
 
     if (data.lineItems) {
       for (const item of data.lineItems) {
@@ -44,7 +46,9 @@ export class FinancialService {
       }
     }
 
-    const savedInvoiceId = Array.isArray(savedInvoice) ? savedInvoice[0].id : savedInvoice.id;
+    const savedInvoiceId = Array.isArray(savedInvoice)
+      ? savedInvoice[0].id
+      : savedInvoice.id;
     return this.getInvoiceById(savedInvoiceId);
   }
 

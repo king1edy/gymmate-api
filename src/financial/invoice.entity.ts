@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Gym } from '../gym/gym.entity';
 import { Member } from '../membership/member.entity';
 
@@ -19,10 +26,10 @@ export class Invoice {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   subtotal: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   taxAmount: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   discountAmount: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
@@ -37,7 +44,7 @@ export class Invoice {
   @Column({ default: 'pending' })
   status: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   paidAmount: number;
 
   @Column({ type: 'date', nullable: true })

@@ -1,5 +1,20 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -18,21 +33,33 @@ export class GymController {
   @Post()
   @Roles('admin')
   @ApiOperation({ summary: 'Create new gym' })
-  @ApiResponse({ status: 201, description: 'Gym created successfully', type: GymResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Gym created successfully',
+    type: GymResponseDto,
+  })
   async create(@Body() createGymDto: CreateGymDto): Promise<GymResponseDto> {
     return this.gymService.create(createGymDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all gyms' })
-  @ApiResponse({ status: 200, description: 'Return all gyms', type: [GymResponseDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Return all gyms',
+    type: [GymResponseDto],
+  })
   async findAll(): Promise<GymResponseDto[]> {
     return this.gymService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get gym by id' })
-  @ApiResponse({ status: 200, description: 'Return found gym', type: GymResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Return found gym',
+    type: GymResponseDto,
+  })
   async findOne(@Param('id') id: string): Promise<GymResponseDto> {
     return this.gymService.findOne(id);
   }
@@ -40,7 +67,11 @@ export class GymController {
   @Put(':id')
   @Roles('admin')
   @ApiOperation({ summary: 'Update gym' })
-  @ApiResponse({ status: 200, description: 'Gym updated successfully', type: GymResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Gym updated successfully',
+    type: GymResponseDto,
+  })
   async update(
     @Param('id') id: string,
     @Body() updateGymDto: UpdateGymDto,

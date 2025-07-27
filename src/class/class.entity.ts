@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Gym } from '../gym/gym.entity';
 import { ClassCategory } from './class-category.entity';
 
@@ -25,7 +32,7 @@ export class Class {
   @Column({ default: 20 })
   capacity: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   price: number;
 
   @Column({ default: 1 })

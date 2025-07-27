@@ -1,17 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Member } from './member.entity';
 import { MembershipPlan } from './membership-plan.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
-@Entity('member_memberships')
+@Entity('member_subscriptions')
 export class MemberMembership {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Member)
+  @ManyToOne(() => Member, { nullable: false })
   member: Member;
 
-  @ManyToOne(() => MembershipPlan)
+  @Column({ type: 'uuid' })
+  memberId: string;
+
+  @ManyToOne(() => Tenant, { nullable: false })
+  tenant: Tenant;
+
+  @Column({ type: 'uuid' })
+  tenantId: string;
+
+  @ManyToOne(() => MembershipPlan, { nullable: false })
   membershipPlan: MembershipPlan;
+
+  @Column({ type: 'uuid' })
+  membershipTypeId: string;
 
   @Column({ type: 'date' })
   startDate: Date;
@@ -19,23 +39,14 @@ export class MemberMembership {
   @Column({ type: 'date', nullable: true })
   endDate: Date;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  monthlyAmount: number;
+  @Column({ type: 'numeric', precision: 10, scale: 2 })
+  pricePaid: number;
 
-  @Column()
-  billingCycle: string;
+  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  discountAmount: number;
 
-  @Column({ type: 'date', nullable: true })
-  nextBillingDate: Date;
-
-  @Column({ nullable: true })
-  classCreditsRemaining: number;
-
-  @Column({ nullable: true })
-  guestPassesRemaining: number;
-
-  @Column({ nullable: true })
-  trainerSessionsRemaining: number;
+  @Column({ type: 'text', nullable: true })
+  discountReason: string;
 
   @Column({ default: 'active' })
   status: string;
@@ -47,10 +58,46 @@ export class MemberMembership {
   isFrozen: boolean;
 
   @Column({ type: 'date', nullable: true })
-  frozenUntil: Date;
+  freezeStartDate: Date;
+
+  @Column({ type: 'date', nullable: true })
+  freezeEndDate: Date;
+
+  @Column({ default: 0 })
+  totalFreezeDays: number;
 
   @Column({ type: 'text', nullable: true })
   freezeReason: string;
+
+  @Column({ type: 'date', nullable: true })
+  cancellationDate: Date;
+
+  @Column({ type: 'text', nullable: true })
+  cancellationReason: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  cancellationType: string;
+
+  @Column({ default: 0 })
+  visitsUsed: number;
+
+  @Column({ default: 0 })
+  classesUsed: number;
+
+  @Column({ type: 'date', nullable: true })
+  lastVisitDate: Date;
+
+  @Column({ nullable: true })
+  paymentMethod: string;
+
+  @Column({ type: 'date', nullable: true })
+  nextPaymentDate: Date;
+
+  @Column({ type: 'date', nullable: true })
+  lastPaymentDate: Date;
+
+  @Column({ nullable: true })
+  stripeSubscriptionId: string;
 
   @CreateDateColumn()
   createdAt: Date;

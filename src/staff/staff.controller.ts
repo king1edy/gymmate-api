@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { Roles } from '../auth/roles.decorator';
 
@@ -92,10 +101,7 @@ export class StaffController {
 
   @Put('member/:id/schedule')
   @Roles('admin', 'manager')
-  async updateStaffSchedule(
-    @Param('id') id: string,
-    @Body() schedule: any,
-  ) {
+  async updateStaffSchedule(@Param('id') id: string, @Body() schedule: any) {
     return this.staffService.updateStaffSchedule(id, schedule);
   }
 

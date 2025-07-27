@@ -18,7 +18,7 @@ export class MembershipService {
 
   async getMembers(gymId: string, filter: any = {}) {
     return this.memberRepository.find({
-      where: { user: { gym: { id: gymId } }, ...filter },
+      where: { user: { tenantId: gymId }, ...filter },
       relations: ['user'],
     });
   }
@@ -42,14 +42,14 @@ export class MembershipService {
 
   async getPlans(gymId: string) {
     return this.planRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenantId: gymId },
     });
   }
 
   async getPlanById(id: string) {
     return this.planRepository.findOne({
       where: { id },
-      relations: ['gym'],
+      relations: [],
     });
   }
 

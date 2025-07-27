@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -37,10 +46,7 @@ export class MarketingController {
   // Promotion Endpoints
   @Get('promotions/:gymId')
   @Roles('admin', 'staff')
-  async getPromotions(
-    @Param('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getPromotions(@Param('gymId') gymId: string, @Query() filter: any) {
     return this.marketingService.getPromotions(gymId, filter);
   }
 
@@ -78,10 +84,7 @@ export class MarketingController {
   // Lead Management Endpoints
   @Get('leads/:gymId')
   @Roles('admin', 'staff')
-  async getLeads(
-    @Param('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getLeads(@Param('gymId') gymId: string, @Query() filter: any) {
     return this.marketingService.getLeads(gymId, filter);
   }
 
@@ -111,7 +114,10 @@ export class MarketingController {
     @Query('startDate') startDate: Date,
     @Query('endDate') endDate: Date,
   ) {
-    return this.marketingService.getLeadSourceStats(gymId, { startDate, endDate });
+    return this.marketingService.getLeadSourceStats(gymId, {
+      startDate,
+      endDate,
+    });
   }
 
   @Get('analytics/campaign/:id')

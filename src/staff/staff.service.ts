@@ -110,25 +110,27 @@ export class StaffService {
     if (!trainer) {
       throw new Error('Trainer not found');
     }
-    
+
     trainer.certifications = certifications;
     return this.trainerRepository.save(trainer);
   }
 
   async getExpiredCertifications(gymId: string) {
     const today = new Date();
-    return this.trainerRepository.find({
-      where: {
-        user: { gym: { id: gymId } },
-        isActive: true,
-      },
-      relations: ['user'],
-    }).then(trainers => {
-      return trainers.filter(trainer => {
-        return trainer.certifications.some((cert: any) => 
-          new Date(cert.expiryDate) <= today
-        );
+    return this.trainerRepository
+      .find({
+        where: {
+          user: { gym: { id: gymId } },
+          isActive: true,
+        },
+        relations: ['user'],
+      })
+      .then((trainers) => {
+        return trainers.filter((trainer) => {
+          return trainer.certifications.some(
+            (cert: any) => new Date(cert.expiryDate) <= today,
+          );
+        });
       });
-    });
   }
 }

@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity('trainers')
@@ -18,7 +25,7 @@ export class Trainer {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   hourlyRate: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0.0 })
   commissionRate: number;
 
   @Column({ type: 'jsonb', default: '[]' })

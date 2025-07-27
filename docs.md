@@ -250,6 +250,121 @@ API requests are limited to:
 - 100 requests per minute for authenticated users
 - 20 requests per minute for unauthenticated users
 
+## Project Structure
+
+```
+// Project Structure for GymMate NestJS Backend
+
+/*
+gymmate-backend/
+├── src/
+│   ├── app.module.ts
+│   ├── main.ts
+│   ├── common/
+│   │   ├── decorators/
+│   │   │   ├── roles.decorator.ts
+│   │   │   └── tenant.decorator.ts
+│   │   ├── guards/
+│   │   │   ├── auth.guard.ts
+│   │   │   ├── roles.guard.ts
+│   │   │   └── tenant.guard.ts
+│   │   ├── interceptors/
+│   │   │   └── tenant.interceptor.ts
+│   │   ├── pipes/
+│   │   │   └── validation.pipe.ts
+│   │   └── types/
+│   │       └── index.ts
+│   ├── config/
+│   │   ├── database.config.ts
+│   │   ├── auth.config.ts
+│   │   └── app.config.ts
+│   ├── database/
+│   │   ├── entities/
+│   │   │   ├── gym.entity.ts
+│   │   │   ├── user.entity.ts
+│   │   │   ├── member.entity.ts
+│   │   │   ├── staff.entity.ts
+│   │   │   ├── membership-type.entity.ts
+│   │   │   ├── member-subscription.entity.ts
+│   │   │   ├── class.entity.ts
+│   │   │   ├── class-schedule.entity.ts
+│   │   │   ├── booking.entity.ts
+│   │   │   ├── equipment.entity.ts
+│   │   │   ├── room.entity.ts
+│   │   │   ├── workout.entity.ts
+│   │   │   ├── health-metric.entity.ts
+│   │   │   ├── payment.entity.ts
+│   │   │   └── access-log.entity.ts
+│   │   ├── migrations/
+│   │   └── seeds/
+│   │       └── skaton-fitness-seed.ts
+│   ├── modules/
+│   │   ├── auth/
+│   │   │   ├── auth.module.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── login.dto.ts
+│   │   │   │   └── register.dto.ts
+│   │   │   └── strategies/
+│   │   │       └── jwt.strategy.ts
+│   │   ├── gyms/
+│   │   │   ├── gyms.module.ts
+│   │   │   ├── gyms.controller.ts
+│   │   │   ├── gyms.service.ts
+│   │   │   └── dto/
+│   │   │       ├── create-gym.dto.ts
+│   │   │       └── update-gym.dto.ts
+│   │   ├── members/
+│   │   │   ├── members.module.ts
+│   │   │   ├── members.controller.ts
+│   │   │   ├── members.service.ts
+│   │   │   └── dto/
+│   │   │       ├── create-member.dto.ts
+│   │   │       └── update-member.dto.ts
+│   │   ├── classes/
+│   │   │   ├── classes.module.ts
+│   │   │   ├── classes.controller.ts
+│   │   │   ├── classes.service.ts
+│   │   │   └── dto/
+│   │   │       ├── create-class.dto.ts
+│   │   │       └── schedule-class.dto.ts
+│   │   ├── bookings/
+│   │   │   ├── bookings.module.ts
+│   │   │   ├── bookings.controller.ts
+│   │   │   ├── bookings.service.ts
+│   │   │   └── dto/
+│   │   │       ├── create-booking.dto.ts
+│   │   │       └── update-booking.dto.ts
+│   │   ├── payments/
+│   │   │   ├── payments.module.ts
+│   │   │   ├── payments.controller.ts
+│   │   │   ├── payments.service.ts
+│   │   │   └── dto/
+│   │   │       └── create-payment.dto.ts
+│   │   ├── health/
+│   │   │   ├── health.module.ts
+│   │   │   ├── health.controller.ts
+│   │   │   ├── health.service.ts
+│   │   │   └── dto/
+│   │   │       ├── health-metric.dto.ts
+│   │   │       └── workout.dto.ts
+│   │   └── analytics/
+│   │       ├── analytics.module.ts
+│   │       ├── analytics.controller.ts
+│   │       └── analytics.service.ts
+│   └── utils/
+│       ├── supabase.client.ts
+│       ├── encryption.util.ts
+│       └── date.util.ts
+├── package.json
+├── tsconfig.json
+├── nest-cli.json
+├── .env.example
+└── README.md
+*/
+```
+
 ## Development Setup
 
 1. Clone the repository:

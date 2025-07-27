@@ -6,8 +6,10 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
-  
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
+
   // Swagger documentation setup
   const config = new DocumentBuilder()
     .setTitle('GymMate API')
@@ -23,7 +25,7 @@ async function bootstrap() {
     .addTag('classes', 'Class management endpoints')
     .addBearerAuth()
     .build();
-    
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {

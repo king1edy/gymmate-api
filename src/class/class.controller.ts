@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -29,10 +39,7 @@ export class ClassController {
 
   @Get('schedule')
   @Roles('admin', 'staff', 'trainer', 'member')
-  async getSchedules(
-    @Query('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getSchedules(@Query('gymId') gymId: string, @Query() filter: any) {
     return this.classService.getSchedules(gymId, filter);
   }
 

@@ -8,4 +8,4 @@ export default () => ({
     name: process.env.DB_NAME || 'gymmate',
   },
   jwtSecret: process.env.JWT_SECRET || 'secretKey',
-}); 
+});

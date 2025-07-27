@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Member } from '../membership/member.entity';
 import { ClassSchedule } from './class-schedule.entity';
 
@@ -22,7 +29,7 @@ export class ClassBooking {
   @Column({ default: 1 })
   creditsUsed: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   amountPaid: number;
 
   @Column({ type: 'timestamp', nullable: true })

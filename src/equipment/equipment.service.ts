@@ -68,7 +68,7 @@ export class EquipmentService {
     const today = new Date();
     const upcomingDate = new Date(today.setDate(today.getDate() + 30));
     return this.equipmentRepository.find({
-      where: { 
+      where: {
         gym: { id: gymId },
         nextMaintenanceDate: LessThanOrEqual(upcomingDate),
       },

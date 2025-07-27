@@ -142,7 +142,9 @@ export class MarketingService {
     return {
       campaignName: campaign.name,
       totalLeads: leads.length,
-      conversionRate: (leads.filter(l => l.status === 'converted').length / leads.length) * 100,
+      conversionRate:
+        (leads.filter((l) => l.status === 'converted').length / leads.length) *
+        100,
       // Add more metrics as needed
     };
   }

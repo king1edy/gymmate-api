@@ -1,17 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Unique,
+} from 'typeorm';
 import { Tenant } from '../tenant/tenant.entity';
 import { UserRole } from './dto/UserRole';
 
 @Entity('users')
+@Unique(['email', 'tenantId'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Tenant)
+  @ManyToOne(() => Tenant, { nullable: false })
   tenant: Tenant;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'uuid' })
   tenantId: string;
 
   @Column()
@@ -20,22 +28,43 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   email: string;
 
   @Column()
   passwordHash: string;
 
   @Column({ nullable: true })
-  phoneNumber: string;
+  phone: string;
 
-  @ManyToOne(() => Gym, { eager: true })
-  gym: Gym;
+  @Column({ type: 'date', nullable: true })
+  dateOfBirth: Date;
+
+  @Column({ nullable: true })
+  gender: string;
+
+  @Column({ nullable: true })
+  avatarUrl: string;
+
+  @Column({ default: false })
+  emailVerified: boolean;
+
+  @Column({ nullable: true })
+  emailVerificationToken: string;
+
+  @Column({ nullable: true })
+  passwordResetToken: string;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  passwordResetExpires: Date;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  lastLoginAt: Date;
 
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.MEMBER
+    default: UserRole.MEMBER,
   })
   role: UserRole;
 

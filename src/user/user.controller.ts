@@ -1,5 +1,19 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -18,7 +32,11 @@ export class UserController {
   @Post()
   @Roles('admin')
   @ApiOperation({ summary: 'Create new user' })
-  @ApiResponse({ status: 201, description: 'User created successfully', type: UserResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'User created successfully',
+    type: UserResponseDto,
+  })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     return this.userService.create(createUserDto);
   }
@@ -26,7 +44,11 @@ export class UserController {
   @Get()
   @Roles('admin')
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, description: 'Return all users', type: [UserResponseDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Return all users',
+    type: [UserResponseDto],
+  })
   async findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
   }
@@ -34,7 +56,11 @@ export class UserController {
   @Get(':id')
   @Roles('admin', 'member')
   @ApiOperation({ summary: 'Get user by id' })
-  @ApiResponse({ status: 200, description: 'Return found user', type: UserResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Return found user',
+    type: UserResponseDto,
+  })
   async findOne(@Param('id') id: string): Promise<UserResponseDto> {
     return this.userService.findOne(id);
   }
@@ -42,7 +68,11 @@ export class UserController {
   @Put(':id')
   @Roles('admin', 'member')
   @ApiOperation({ summary: 'Update user' })
-  @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    type: UserResponseDto,
+  })
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,

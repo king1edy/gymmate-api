@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { Gym } from '../gym/gym.entity';
 
 @Entity('subscriptions')
@@ -6,7 +13,7 @@ export class Subscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym, gym => gym.id)
+  @ManyToOne(() => Gym, (gym) => gym.id)
   gym: Gym;
 
   @Column()
