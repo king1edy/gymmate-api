@@ -58,7 +58,10 @@ describe('TenantService', () => {
   it('should update a tenant', async () => {
     const mockTenant = { id: '1', name: 'Tenant1' };
     tenantRepository.findOne.mockResolvedValue(mockTenant);
-    tenantRepository.save.mockResolvedValue({ ...mockTenant, name: 'Updated Tenant' });
+    tenantRepository.save.mockResolvedValue({
+      ...mockTenant,
+      name: 'Updated Tenant',
+    });
     const result = await service.update('1', { name: 'Updated Tenant' });
     expect(result).toEqual({ ...mockTenant, name: 'Updated Tenant' });
   });

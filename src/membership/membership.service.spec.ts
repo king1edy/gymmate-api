@@ -88,7 +88,10 @@ describe('MembershipService', () => {
 
   it('should update a membership plan', async () => {
     membershipRepository.update.mockResolvedValue({ affected: 1 });
-    membershipRepository.findOne.mockResolvedValue({ id: '1', name: 'Updated Plan' });
+    membershipRepository.findOne.mockResolvedValue({
+      id: '1',
+      name: 'Updated Plan',
+    });
     const result = await service.updatePlan('1', { name: 'Updated Plan' });
     expect(result).toEqual({ id: '1', name: 'Updated Plan' });
   });

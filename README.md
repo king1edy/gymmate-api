@@ -23,9 +23,22 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+GymMate is a comprehensive gym management system built with NestJS. It features a robust Role-Based Access Control (RBAC) system for secure authentication and authorization.
 
-## Project setup
+## Features
+
+- 🔐 Complete RBAC authentication system
+- 🏢 Multi-tenant architecture
+- 📝 Member management
+- 📊 Class scheduling
+- 💪 Equipment tracking
+- 💰 Financial management
+- 📱 Access control
+- 📈 Marketing tools
+
+For detailed information about the RBAC system, please see [RBAC Documentation](docs/RBAC_GUIDE.md).
+
+## Project Setup
 
 ```bash
 $ npm install

@@ -6,16 +6,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './jwt.strategy';
-import { Gym } from '../gym/gym.entity';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Gym]),
+    TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         secret: configService.get('jwtSecret'),
         signOptions: { expiresIn: '1d' },
       }),

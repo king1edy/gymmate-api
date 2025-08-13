@@ -67,27 +67,27 @@ export class StaffController {
   @Get('trainers/available/:gymId')
   async getAvailableTrainers(
     @Param('gymId') gymId: string,
-    @Query('date') date: Date,
+    //@Query('date') date: Date,
   ) {
-    return this.staffService.getAvailableTrainers(gymId, date);
+    return this.staffService.getAvailableTrainers(gymId);
   }
 
   @Get('trainer/:id/schedule')
   async getTrainerSchedule(
     @Param('id') id: string,
-    @Query('startDate') startDate: Date,
-    @Query('endDate') endDate: Date,
+    // @Query('startDate') startDate: Date,
+    // @Query('endDate') endDate: Date,
   ) {
-    return this.staffService.getTrainerSchedule(id, startDate, endDate);
+    return this.staffService.getTrainerSchedule(id); //, startDate, endDate); return and fix/improve this I need to be able to get trainer based on set schedule
   }
 
   @Get('department/:id/schedule')
   @Roles('admin', 'manager')
   async getStaffSchedule(
     @Param('id') departmentId: string,
-    @Query('date') date: Date,
+    // @Query('date') date: Date,
   ) {
-    return this.staffService.getStaffSchedule(departmentId, date);
+    return this.staffService.getStaffSchedule(departmentId); // Same as above method
   }
 
   @Put('trainer/:id/availability')
@@ -119,5 +119,12 @@ export class StaffController {
   @Roles('admin', 'manager')
   async getExpiredCertifications(@Param('gymId') gymId: string) {
     return this.staffService.getExpiredCertifications(gymId);
+  }
+
+  // Delete staff user
+  @Delete('staff/:id')
+  @Roles('admin')
+  async deleteStaff(@Param('id') id: string) {
+    return this.staffService.softDeleteStaffMember(id);
   }
 }

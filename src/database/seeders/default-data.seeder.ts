@@ -29,24 +29,94 @@ export class DefaultDataSeeder {
   private async seedPermissions() {
     const permissions = [
       // User permissions
-      { name: 'users:create', description: 'Create users', resource: 'users', action: 'create' },
-      { name: 'users:read', description: 'Read users', resource: 'users', action: 'read' },
-      { name: 'users:update', description: 'Update users', resource: 'users', action: 'update' },
-      { name: 'users:delete', description: 'Delete users', resource: 'users', action: 'delete' },
+      {
+        name: 'users:create',
+        description: 'Create users',
+        resource: 'users',
+        action: 'create',
+      },
+      {
+        name: 'users:read',
+        description: 'Read users',
+        resource: 'users',
+        action: 'read',
+      },
+      {
+        name: 'users:update',
+        description: 'Update users',
+        resource: 'users',
+        action: 'update',
+      },
+      {
+        name: 'users:delete',
+        description: 'Delete users',
+        resource: 'users',
+        action: 'delete',
+      },
 
       // Role permissions
-      { name: 'roles:create', description: 'Create roles', resource: 'roles', action: 'create' },
-      { name: 'roles:read', description: 'Read roles', resource: 'roles', action: 'read' },
-      { name: 'roles:update', description: 'Update roles', resource: 'roles', action: 'update' },
-      { name: 'roles:delete', description: 'Delete roles', resource: 'roles', action: 'delete' },
+      {
+        name: 'roles:create',
+        description: 'Create roles',
+        resource: 'roles',
+        action: 'create',
+      },
+      {
+        name: 'roles:read',
+        description: 'Read roles',
+        resource: 'roles',
+        action: 'read',
+      },
+      {
+        name: 'roles:update',
+        description: 'Update roles',
+        resource: 'roles',
+        action: 'update',
+      },
+      {
+        name: 'roles:delete',
+        description: 'Delete roles',
+        resource: 'roles',
+        action: 'delete',
+      },
 
       // Gym-specific permissions
-      { name: 'gym:manage', description: 'Manage gym settings', resource: 'gym', action: 'manage' },
-      { name: 'members:manage', description: 'Manage gym members', resource: 'members', action: 'manage' },
-      { name: 'classes:manage', description: 'Manage gym classes', resource: 'classes', action: 'manage' },
-      { name: 'trainers:manage', description: 'Manage trainers', resource: 'trainers', action: 'manage' },
-      { name: 'equipment:manage', description: 'Manage equipment', resource: 'equipment', action: 'manage' },
-      { name: 'reports:view', description: 'View reports', resource: 'reports', action: 'view' },
+      {
+        name: 'gym:manage',
+        description: 'Manage gym settings',
+        resource: 'gym',
+        action: 'manage',
+      },
+      {
+        name: 'members:manage',
+        description: 'Manage gym members',
+        resource: 'members',
+        action: 'manage',
+      },
+      {
+        name: 'classes:manage',
+        description: 'Manage gym classes',
+        resource: 'classes',
+        action: 'manage',
+      },
+      {
+        name: 'trainers:manage',
+        description: 'Manage trainers',
+        resource: 'trainers',
+        action: 'manage',
+      },
+      {
+        name: 'equipment:manage',
+        description: 'Manage equipment',
+        resource: 'equipment',
+        action: 'manage',
+      },
+      {
+        name: 'reports:view',
+        description: 'View reports',
+        resource: 'reports',
+        action: 'view',
+      },
     ];
 
     for (const permissionData of permissions) {

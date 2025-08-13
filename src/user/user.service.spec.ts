@@ -149,7 +149,10 @@ describe('UserService', () => {
       updatedAt: new Date(),
     };
     usersRepository.findOne.mockResolvedValue(mockUser);
-    usersRepository.save.mockResolvedValue({ ...mockUser, email: 'updated@example.com' });
+    usersRepository.save.mockResolvedValue({
+      ...mockUser,
+      email: 'updated@example.com',
+    });
     const result = await service.update('1', { email: 'updated@example.com' });
     expect(result).toEqual({ ...mockUser, email: 'updated@example.com' });
   });

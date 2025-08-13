@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Role } from '../../roles/role.entity';
 
 export class UserResponseDto {
   @ApiProperty({ description: 'User ID' })
@@ -17,7 +18,7 @@ export class UserResponseDto {
   phone?: string;
 
   @ApiProperty({ description: 'User roles' })
-  roles: string[];
+  roles: Role[];
 
   @ApiProperty({ description: 'Date when the user was created' })
   createdAt: Date;

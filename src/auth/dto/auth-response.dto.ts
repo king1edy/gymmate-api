@@ -4,18 +4,18 @@ export class AuthResponseDto {
   @ApiProperty({ description: 'JWT access token' })
   accessToken: string;
 
-  @ApiProperty({ description: 'Type of token' })
+  @ApiProperty({ example: 'Bearer' })
   tokenType: string;
 
   @ApiProperty({ description: 'User ID' })
   userId: string;
 
-  @ApiProperty({ description: 'User email' })
+  @ApiProperty({ example: 'user@example.com' })
   email: string;
 
-  @ApiProperty({ description: 'User roles' })
+  @ApiProperty({ example: ['member'] })
   roles: string[];
 
-  @ApiProperty({ description: 'Token expiration time in seconds' })
+  @ApiProperty({ example: 86400 })
   expiresIn: number;
 }

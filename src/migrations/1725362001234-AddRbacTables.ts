@@ -38,11 +38,15 @@ export class AddRbacTables1725362001234 implements MigrationInterface {
       const roleColumns = await queryRunner.getTable('roles');
 
       if (!roleColumns.findColumnByName('isSystem')) {
-        await queryRunner.query(`ALTER TABLE "roles" ADD COLUMN "isSystem" boolean NOT NULL DEFAULT false;`);
+        await queryRunner.query(
+          `ALTER TABLE "roles" ADD COLUMN "isSystem" boolean NOT NULL DEFAULT false;`,
+        );
       }
 
       if (!roleColumns.findColumnByName('description')) {
-        await queryRunner.query(`ALTER TABLE "roles" ADD COLUMN "description" varchar;`);
+        await queryRunner.query(
+          `ALTER TABLE "roles" ADD COLUMN "description" varchar;`,
+        );
       }
     }
 
@@ -71,7 +75,9 @@ export class AddRbacTables1725362001234 implements MigrationInterface {
     // Add refreshToken column to users table if it doesn't exist
     const usersTable = await queryRunner.getTable('users');
     if (!usersTable.findColumnByName('refreshToken')) {
-      await queryRunner.query(`ALTER TABLE "users" ADD COLUMN "refreshToken" varchar;`);
+      await queryRunner.query(
+        `ALTER TABLE "users" ADD COLUMN "refreshToken" varchar;`,
+      );
     }
   }
 
@@ -84,7 +90,9 @@ export class AddRbacTables1725362001234 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE IF EXISTS "permissions";`);
 
     // Remove the refreshToken column from users
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN IF EXISTS "refreshToken";`);
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN IF EXISTS "refreshToken";`,
+    );
 
     // We don't drop the roles table in case it was pre-existing
   }

@@ -48,16 +48,14 @@ describe('Full Project Integration and Edge Case Tests', () => {
 
     it('should update user email successfully', async () => {
       // Create user first
-      const createRes = await request(app.getHttpServer())
-        .post('/user')
-        .send({
-          firstName: 'Update',
-          lastName: 'User',
-          email: 'updateuser@example.com',
-          phone: '1234567890',
-          role: 'member',
-          isActive: true,
-        });
+      const createRes = await request(app.getHttpServer()).post('/user').send({
+        firstName: 'Update',
+        lastName: 'User',
+        email: 'updateuser@example.com',
+        phone: '1234567890',
+        role: 'member',
+        isActive: true,
+      });
       const userId = createRes.body.id;
 
       // Update email

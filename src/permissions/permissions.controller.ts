@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
+import { QueryPermissionsDto } from './dto/query-permissions.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -24,9 +26,9 @@ export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Get()
-  @Roles('admin', 'super_admin')
-  findAll() {
-    return this.permissionsService.findAll();
+  @Roles('admin')
+  findAll(@Query() query: QueryPermissionsDto) {
+    return this.permissionsService.findAll(query);
   }
 
   @Get(':id')
