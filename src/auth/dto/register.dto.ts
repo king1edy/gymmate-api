@@ -6,16 +6,25 @@ import {
   IsOptional,
   Matches,
   IsUUID,
+  IsNotEmpty,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class RegisterDto {
-  @ApiProperty({ example: 'john.doe@example.com' })
+export class RegisterDto {  
+  @ApiProperty({ description: 'Tenant ID this user belongs to' })
+  @IsUUID()
+  @IsNotEmpty()
+  tenantId: string;
+  
+  @ApiProperty({ description: 'User email address' })
   @IsEmail()
+  @IsNotEmpty()
   email: string;
-
+  
   @ApiProperty({ example: 'StrongPassword123!' })
+  @ApiProperty({ description: 'User password' })
   @IsString()
+  @IsNotEmpty()
   @MinLength(8)
   @MaxLength(32)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
@@ -24,22 +33,28 @@ export class RegisterDto {
   })
   password: string;
 
-  @ApiProperty({ example: 'John' })
+  @ApiProperty({ description: 'User first name' })
   @IsString()
-  @MaxLength(50)
+  @IsNotEmpty()
   firstName: string;
 
-  @ApiProperty({ example: 'Doe' })
+  @ApiProperty({ description: 'User last name' })
   @IsString()
-  @MaxLength(50)
+  @IsNotEmpty()
   lastName: string;
 
-  @ApiPropertyOptional({ example: '+1234567890' })
-  @IsOptional()
+  @ApiPropertyOptional({ description: 'User phone number' })
   @IsString()
+  @IsOptional()
   phone?: string;
 
-  @ApiProperty({ description: 'Tenant ID' })
-  @IsUUID()
-  tenantId: string;
+  @ApiPropertyOptional({ description: 'User date of birth' })
+  @IsString()
+  @IsOptional()
+  dateOfBirth?: string;
+
+  @ApiPropertyOptional({ description: 'User type', default: 'MEMBER' })
+  @IsString()
+  @IsOptional()
+  userType?: string = 'MEMBER';
 }

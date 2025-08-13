@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import * as bcrypt from 'bcryptjs';
 import { Role } from '../roles/role.entity';
-import { UserType } from 'src/types/interfaces';
+import { UserType } from '../types/interfaces';
 
 @Injectable()
 export class UserService {
@@ -43,29 +43,22 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const { password, gymId, roleIds, ...userData } = createUserDto;
+    const { password, tenantId, ...userData } = createUserDto;
     const hash = await bcrypt.hash(password, 10);
 
     // Find the roles
     let roles: Role[] = [];
-    if (roleIds && roleIds.length > 0) {
-      roles = await this.roleRepository.findByIds(roleIds);
-      if (roles.length !== roleIds.length) {
-        throw new NotFoundException('One or more roles not found');
-      }
-    } else {
-      // Assign default member role if no roles specified
-      const defaultRole = await this.roleRepository.findOne({ where: { name: 'MEMBER' } });
-      if (!defaultRole) {
-        throw new NotFoundException('Default member role not found');
-      }
-      roles = [defaultRole];
+    // Assign default member role if no roles specified
+    const defaultRole = await this.roleRepository.findOne({ where: { name: 'MEMBER' } });
+    if (!defaultRole) {
+      throw new NotFoundException('Default member role not found');
     }
+    roles = [defaultRole];
 
     const user = this.userRepository.create({
       ...userData,
       passwordHash: hash,
-      tenantId: gymId,
+      tenantId: tenantId,
       roles: roles,
       isActive: true,
     });
