@@ -19,7 +19,7 @@ import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtPayload, AuthTokens } from '../types/interfaces';
-import { UserStatus } from '../types/interfaces';
+import { UserStatus, UserType } from '../types/interfaces';
 import { UserRole } from 'src/user/dto/UserRole';
 
 @Injectable()
@@ -35,11 +35,11 @@ export class AuthService {
   async register(
     registerDto: RegisterDto,
   ): Promise<{ user: User; tokens: AuthTokens }> {
-    const { email, password, firstName, lastName, phone } = registerDto;
+    const { email, password, firstName, lastName, phone, tenantId, userType } = registerDto;
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
-      where: { email },
+      where: { email, tenantId },
     });
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
@@ -53,17 +53,22 @@ export class AuthService {
 
     // Create user
     const user = this.userRepository.create({
-      email,
-      password: hashedPassword,
       firstName,
       lastName,
+      email,
       phone,
+      passwordHash: hashedPassword,
       emailVerificationToken,
       status: UserStatus.PENDING_VERIFICATION,
+      tenantId,
+      userType: userType || UserType.MEMBER,
     });
 
     // Assign default role
-    const defaultRole = await this.usersService.getDefaultRole();
+    const defaultRole = await this.usersService.getDefaultRole(userType || UserType.MEMBER);
+    if (!defaultRole) {
+      throw new BadRequestException('Default role not found');
+    }
     user.roles = [defaultRole];
 
     await this.userRepository.save(user);
@@ -261,7 +266,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       roles: user.roles?.map((role) => role.name) || [],
-      permissions: user.permissions || [],
+      tenantId: user.tenantId,
     };
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -334,18 +339,25 @@ export class AuthService {
     const user = this.userRepository.create({
       email,
       passwordHash: hash,
-      roles,
       tenantId,
       firstName: 'New', // Default values for legacy system
       lastName: 'User',
+      userType: UserType.MEMBER,
     });
     await this.userRepository.save(user);
+
+    // Get the role for the user
+    const userRole = await this.usersService.getDefaultRole(UserType.MEMBER);
+    if (userRole) {
+      user.roles = [userRole];
+      await this.userRepository.save(user);
+    }
 
     // Return the same format as login
     const payload = {
       email: user.email,
       sub: user.id,
-      role: user.roles,
+      role: role,
       tenantId: user.tenantId,
     };
     const token = this.jwtService.sign(payload);
@@ -355,7 +367,7 @@ export class AuthService {
       tokenType: 'Bearer',
       userId: user.id,
       email: user.email,
-      roles: [user.roles],
+      roles: [role],
       expiresIn: 86400, // 24 hours in seconds
     };
   }

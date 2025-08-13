@@ -7,8 +7,10 @@ import {
   Matches,
   IsUUID,
   IsNotEmpty,
+  IsEnum,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { UserType } from '../../types/interfaces';
 
 export class RegisterDto {  
   @ApiProperty({ description: 'Tenant ID this user belongs to' })
@@ -53,8 +55,12 @@ export class RegisterDto {
   @IsOptional()
   dateOfBirth?: string;
 
-  @ApiPropertyOptional({ description: 'User type', default: 'MEMBER' })
-  @IsString()
+  @ApiPropertyOptional({
+      description: 'User type',
+      enum: UserType,
+      default: UserType.MEMBER,
+    })
+  @IsEnum(UserType)
   @IsOptional()
-  userType?: string = 'MEMBER';
+  userType?: UserType = UserType.MEMBER;
 }
