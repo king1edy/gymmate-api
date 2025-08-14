@@ -1,52 +1,65 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { SubscriptionPlan, SubscriptionStatus } from './types';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('tenants')
 export class Tenant {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ unique: true })
-    subdomain: string;
+  @Column({ unique: true })
+  subdomain: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column({ type: 'jsonb', default: '{}' })
-    settings: Record<string, any>;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  settings: Record<string, any>;
 
-    @Column({
-        type: 'enum',
-        enum: SubscriptionPlan,
-        default: SubscriptionPlan.STARTER
-    })
-    subscriptionPlan: SubscriptionPlan;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  businessInfo: Record<string, any>;
 
-    @Column({
-        type: 'enum',
-        enum: SubscriptionStatus,
-        default: SubscriptionStatus.ACTIVE
-    })
-    subscriptionStatus: SubscriptionStatus;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  address: Record<string, any>;
 
-    @Column({ nullable: true })
-    subscriptionExpiresAt: Date;
+  @Column({ type: 'varchar', length: 50, default: 'starter' })
+  subscriptionPlan: string;
 
-    @Column('text', { array: true, default: '{}' })
-    featuresEnabled: string[];
+  @Column({ type: 'varchar', length: 20, default: 'trial' })
+  subscriptionStatus: string;
 
-    @Column({ type: 'integer' })
-    maxMembers: number;
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  subscriptionStartDate: Date;
 
-    @Column({ type: 'integer' })
-    maxStaff: number;
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  subscriptionEndDate: Date;
 
-    @Column({ type: 'jsonb', nullable: true })
-    billingInfo: Record<string, any>;
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  trialEndsAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column('text', {
+    array: true,
+    default: () =>
+      "ARRAY['basic_membership','class_booking','payment_processing','email_notifications']",
+  })
+  featuresEnabled: string[];
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  limits: Record<string, any>;
+
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  billingInfo: Record<string, any>;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

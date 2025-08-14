@@ -38,10 +38,15 @@ export class InvoiceResponseDto {
   @ApiPropertyOptional({ description: 'Additional notes' })
   notes?: string;
 
-  @ApiProperty({ type: [InvoiceLineItemDto], description: 'List of items in the invoice' })
+  @ApiProperty({
+    type: [InvoiceLineItemDto],
+    description: 'List of items in the invoice',
+  })
   lineItems: InvoiceLineItemDto[];
 
-  @ApiProperty({ description: 'Date when the invoice was created in the system' })
+  @ApiProperty({
+    description: 'Date when the invoice was created in the system',
+  })
   createdAt: Date;
 
   @ApiProperty({ description: 'Date when the invoice was last updated' })

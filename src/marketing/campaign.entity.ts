@@ -1,15 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Promotion } from './promotion.entity';
 import { Lead } from './lead.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('campaigns')
 export class Campaign {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
+  
 
   @Column()
   name: string;
@@ -26,7 +35,7 @@ export class Campaign {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   budget: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   spent: number;
 
   @Column({ type: 'text', array: true, default: '{}' })
@@ -53,10 +62,10 @@ export class Campaign {
     costPerAcquisition: number;
   };
 
-  @OneToMany(() => Promotion, promotion => promotion.campaign)
+  @OneToMany(() => Promotion, (promotion) => promotion.campaign)
   promotions: Promotion[];
 
-  @OneToMany(() => Lead, lead => lead.campaign)
+  @OneToMany(() => Lead, (lead) => lead.campaign)
   leads: Lead[];
 
   @Column({ type: 'text', nullable: true })

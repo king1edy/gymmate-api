@@ -6,45 +6,70 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import * as bcrypt from 'bcryptjs';
+import { Role } from '../roles/role.entity';
+import { UserType } from '../types/interfaces';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
   ) {}
 
-  private toResponseDto(user: User): UserResponseDto {
+  private toResponseDto(user: User): {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    roles: Role[];
+    createdAt: Date;
+    updatedAt: Date;
+    isActive: boolean;
+  } {
     return {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      phoneNumber: user.phoneNumber,
-      roles: [user.role],
+      phone: user.phone,
+      roles: user.roles,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-      isActive: user.isActive
+      isActive: user.isActive,
     };
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const { password, gymId, ...userData } = createUserDto;
+    const { password, tenantId, ...userData } = createUserDto;
     const hash = await bcrypt.hash(password, 10);
-    
+
+    // Find the roles
+    let roles: Role[] = [];
+    // Assign default member role if no roles specified
+    const defaultRole = await this.roleRepository.findOne({ where: { name: 'MEMBER' } });
+    if (!defaultRole) {
+      throw new NotFoundException('Default member role not found');
+    }
+    roles = [defaultRole];
+
     const user = this.userRepository.create({
       ...userData,
       passwordHash: hash,
-      gym: { id: gymId } // Set the gym reference using the gymId
+      tenantId: tenantId,
+      roles: roles,
+      isActive: true,
     });
-    
+
     await this.userRepository.save(user);
     return this.toResponseDto(user);
   }
 
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.userRepository.find();
-    return users.map(user => this.toResponseDto(user));
+    return users.map((user) => this.toResponseDto(user));
   }
 
   async findOne(id: string): Promise<UserResponseDto> {
@@ -55,7 +80,10 @@ export class UserService {
     return this.toResponseDto(user);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID "${id}" not found`);
@@ -79,5 +107,20 @@ export class UserService {
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID "${id}" not found`);
     }
+  }
+
+  async getDefaultRole(userType: UserType): Promise<Role | null> {
+    const roleMap = {
+      [UserType.MEMBER]: 'MEMBER',
+      [UserType.TRAINER]: 'TRAINER',
+      [UserType.STAFF]: 'STAFF',
+      [UserType.TENANT_ADMIN]: 'TENANT_ADMIN',
+      [UserType.SUPER_ADMIN]: 'SUPER_ADMIN',
+    };
+
+    const roleName = roleMap[userType];
+    if (!roleName) return null;
+
+    return this.roleRepository.findOne({ where: { name: roleName } });
   }
 }

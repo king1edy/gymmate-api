@@ -25,7 +25,9 @@ export class MembershipResponseDto {
   @ApiProperty({ description: 'Status of the membership' })
   status: string;
 
-  @ApiPropertyOptional({ description: 'Any special notes about the membership' })
+  @ApiPropertyOptional({
+    description: 'Any special notes about the membership',
+  })
   notes?: string;
 
   @ApiProperty({ description: 'Date when the membership was created' })

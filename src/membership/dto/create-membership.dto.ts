@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsUUID, IsOptional, IsDateString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  IsOptional,
+  IsDateString,
+} from 'class-validator';
 
 export class CreateMembershipDto {
   @ApiProperty({ description: 'ID of the user this membership is for' })
@@ -32,7 +39,9 @@ export class CreateMembershipDto {
   @IsNotEmpty()
   cost: number;
 
-  @ApiPropertyOptional({ description: 'Any special notes about the membership' })
+  @ApiPropertyOptional({
+    description: 'Any special notes about the membership',
+  })
   @IsString()
   @IsOptional()
   notes?: string;

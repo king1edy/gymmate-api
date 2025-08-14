@@ -20,9 +20,9 @@ export class MarketingService {
   ) {}
 
   // Campaign Management
-  async getCampaigns(gymId: string) {
+  async getCampaigns(tenantId: string) {
     return this.campaignRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
       relations: ['promotions'],
     });
   }
@@ -30,7 +30,7 @@ export class MarketingService {
   async getCampaign(id: string) {
     return this.campaignRepository.findOne({
       where: { id },
-      relations: ['promotions', 'gym'],
+      relations: ['promotions', 'tenant'],
     });
   }
 
@@ -45,14 +45,16 @@ export class MarketingService {
   }
 
   // Promotion Management
-  async getPromotions(gymId: string, filter: any = {}) {
+  async getPromotions(tenantId: string, filter: any = {}) {
     const now = new Date();
+    const { startDate, endDate, tenant, ...safeFilter } = filter;
     return this.promotionRepository.find({
       where: {
-        gym: { id: gymId },
-        ...filter,
+        tenant: { id: tenantId },
         startDate: LessThanOrEqual(now),
         endDate: MoreThanOrEqual(now),
+        isActive: true,
+        ...safeFilter,
       },
       relations: ['campaign'],
     });
@@ -76,9 +78,9 @@ export class MarketingService {
   }
 
   // Lead Source Management
-  async getLeadSources(gymId: string) {
+  async getLeadSources(tenantId: string) {
     return this.leadSourceRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
     });
   }
 
@@ -88,9 +90,9 @@ export class MarketingService {
   }
 
   // Lead Management
-  async getLeads(gymId: string, filter: any = {}) {
+  async getLeads(tenantId: string, filter: any = {}) {
     return this.leadRepository.find({
-      where: { gym: { id: gymId }, ...filter },
+      where: { tenant: { id: tenantId }, ...filter },
       relations: ['source', 'assignedTo'],
     });
   }
@@ -113,7 +115,7 @@ export class MarketingService {
   }
 
   // Marketing Analytics
-  async getLeadSourceStats(gymId: string, dateRange: any) {
+  async getLeadSourceStats(tenantId: string, dateRange: any) {
     const { startDate, endDate } = dateRange;
     return this.leadRepository
       .createQueryBuilder('lead')
@@ -121,7 +123,7 @@ export class MarketingService {
       .addSelect('COUNT(*)', 'count')
       .addSelect('lead.status', 'status')
       .leftJoin('lead.source', 'source')
-      .where('lead.gym.id = :gymId', { gymId })
+      .where('lead.gym.id = :tenantId', { tenantId })
       .andWhere('lead.createdAt BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
@@ -142,7 +144,9 @@ export class MarketingService {
     return {
       campaignName: campaign.name,
       totalLeads: leads.length,
-      conversionRate: (leads.filter(l => l.status === 'converted').length / leads.length) * 100,
+      conversionRate:
+        (leads.filter((l) => l.status === 'converted').length / leads.length) *
+        100,
       // Add more metrics as needed
     };
   }

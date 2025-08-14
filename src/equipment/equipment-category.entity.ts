@@ -1,13 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
+import { Tenant } from '../tenant/tenant.entity';
+
+/**
+ * Represents a category of equipment in the gym.
+ */
 
 @Entity('equipment_categories')
 export class EquipmentCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;  
 
   @Column()
   name: string;

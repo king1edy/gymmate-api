@@ -1,9 +1,21 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { MarketingService } from './marketing.service';
+import { CreateCampaignDto } from './dto/create-campaign.dto';
 
+@ApiTags('Marketing - Marketing Management Endpoints (Campaigns, Promotions, Lead Sources, Leads, Analytics)')
 @Controller('marketing')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MarketingController {
@@ -24,7 +36,7 @@ export class MarketingController {
 
   @Post('campaign')
   @Roles('admin')
-  async createCampaign(@Body() data: any) {
+  async createCampaign(@Body() data: CreateCampaignDto) {
     return this.marketingService.createCampaign(data);
   }
 
@@ -37,10 +49,7 @@ export class MarketingController {
   // Promotion Endpoints
   @Get('promotions/:gymId')
   @Roles('admin', 'staff')
-  async getPromotions(
-    @Param('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getPromotions(@Param('gymId') gymId: string, @Query() filter: any) {
     return this.marketingService.getPromotions(gymId, filter);
   }
 
@@ -78,10 +87,7 @@ export class MarketingController {
   // Lead Management Endpoints
   @Get('leads/:gymId')
   @Roles('admin', 'staff')
-  async getLeads(
-    @Param('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getLeads(@Param('gymId') gymId: string, @Query() filter: any) {
     return this.marketingService.getLeads(gymId, filter);
   }
 
@@ -111,7 +117,10 @@ export class MarketingController {
     @Query('startDate') startDate: Date,
     @Query('endDate') endDate: Date,
   ) {
-    return this.marketingService.getLeadSourceStats(gymId, { startDate, endDate });
+    return this.marketingService.getLeadSourceStats(gymId, {
+      startDate,
+      endDate,
+    });
   }
 
   @Get('analytics/campaign/:id')

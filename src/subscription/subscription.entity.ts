@@ -1,13 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('subscriptions')
 export class Subscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym, gym => gym.id)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
 
   @Column()
   planName: string;

@@ -1,21 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { EquipmentCategory } from './equipment-category.entity';
-import { GymArea } from '../class/gym-area.entity';
+import { TenantArea } from '../class/tenant-area.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('equipment')
 export class Equipment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
 
   @ManyToOne(() => EquipmentCategory)
   category: EquipmentCategory;
 
-  @ManyToOne(() => GymArea)
-  area: GymArea;
+  @ManyToOne(() => TenantArea)
+  area: TenantArea;
 
   @Column()
   name: string;

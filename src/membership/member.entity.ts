@@ -1,16 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../user/user.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('members')
 export class Member {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: false })
   user: User;
 
-  @Column({ unique: true })
-  membershipNumber: string;
+  @Column({ type: 'uuid' })
+  userId: string;
+
+  @ManyToOne(() => Tenant, { nullable: false })
+  tenant: Tenant;
+
+  @Column({ type: 'uuid' })
+  tenantId: string;
+
+  @Column({ name: 'member_number', unique: true, nullable: true })
+  memberNumber: string;
 
   @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   joinDate: Date;
@@ -18,44 +36,29 @@ export class Member {
   @Column({ default: 'active' })
   status: string;
 
-  @Column({ nullable: true })
-  emergencyContactName: string;
+  @Column({ type: 'text', nullable: true })
+  statusReason: string;
 
-  @Column({ nullable: true })
-  emergencyContactPhone: string;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  emergencyContact: Record<string, any>;
 
-  @Column({ nullable: true })
-  emergencyContactRelationship: string;
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  healthInfo: Record<string, any>;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  medicalConditions: string[];
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  preferences: Record<string, any>;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  allergies: string[];
+  @Column({ type: 'jsonb', default: () => "'{}'" })
+  documents: Record<string, any>;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  medications: string[];
+  @Column({ type: 'uuid', nullable: true })
+  referredBy: string;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  fitnessGoals: string[];
+  @Column({ name: 'referral_code', unique: true, nullable: true })
+  referralCode: string;
 
-  @Column({ nullable: true })
-  experienceLevel: string;
-
-  @Column({ type: 'jsonb', nullable: true })
-  preferredWorkoutTimes: string[];
-
-  @Column({ type: 'jsonb', default: '{"email": true, "sms": false, "push": true}' })
-  communicationPreferences: Record<string, boolean>;
-
-  @Column({ default: false })
-  waiverSigned: boolean;
-
-  @Column({ type: 'date', nullable: true })
-  waiverSignedDate: Date;
-
-  @Column({ default: false })
-  photoConsent: boolean;
+  @Column({ type: 'text', nullable: true })
+  internalNotes: string;
 
   @CreateDateColumn()
   createdAt: Date;

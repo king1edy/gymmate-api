@@ -1,7 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Class } from './class.entity';
 import { Trainer } from '../staff/trainer.entity';
-import { GymArea } from './gym-area.entity';
+import { TenantArea } from '../class/tenant-area.entity';
 
 @Entity('class_schedules')
 export class ClassSchedule {
@@ -14,8 +21,8 @@ export class ClassSchedule {
   @ManyToOne(() => Trainer)
   trainer: Trainer;
 
-  @ManyToOne(() => GymArea)
-  area: GymArea;
+  @ManyToOne(() => TenantArea)
+  area: TenantArea;
 
   @Column({ type: 'timestamp' })
   startTime: Date;

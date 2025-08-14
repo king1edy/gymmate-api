@@ -1,9 +1,21 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { MembershipService } from './membership.service';
 
+@ApiTags('Membership - Membership Management Endpoints (Members, Plans, Memberships)')
 @Controller('membership')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MembershipController {
@@ -11,10 +23,7 @@ export class MembershipController {
 
   @Get('members')
   @Roles('admin', 'staff')
-  async getMembers(
-    @Query('gymId') gymId: string,
-    @Query() filter: any,
-  ) {
+  async getMembers(@Query('gymId') gymId: string, @Query() filter: any) {
     return this.membershipService.getMembers(gymId, filter);
   }
 
@@ -32,10 +41,7 @@ export class MembershipController {
 
   @Put('members/:id')
   @Roles('admin', 'staff')
-  async updateMember(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async updateMember(@Param('id') id: string, @Body() data: any) {
     return this.membershipService.updateMember(id, data);
   }
 
@@ -59,10 +65,7 @@ export class MembershipController {
 
   @Put('plans/:id')
   @Roles('admin')
-  async updatePlan(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async updatePlan(@Param('id') id: string, @Body() data: any) {
     return this.membershipService.updatePlan(id, data);
   }
 
@@ -86,10 +89,7 @@ export class MembershipController {
 
   @Put('members/:memberId/memberships/:id')
   @Roles('admin', 'staff')
-  async updateMembership(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async updateMembership(@Param('id') id: string, @Body() data: any) {
     return this.membershipService.updateMembership(id, data);
   }
 }

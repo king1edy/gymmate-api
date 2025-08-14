@@ -1,19 +1,30 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AccessService } from './access.service';
 
+@ApiTags('Access - Access Control Endpoints')
 @Controller('access')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AccessController {
   constructor(private readonly accessService: AccessService) {}
 
   // Access Points Endpoints
-  @Get('points/:gymId')
+  @Get('points/:tenantId')
   @Roles('admin', 'staff')
-  async getAccessPoints(@Param('gymId') gymId: string) {
-    return this.accessService.getAccessPoints(gymId);
+  async getAccessPoints(@Param('tenantId') tenantId: string) {
+    return this.accessService.getAccessPoints(tenantId);
   }
 
   @Get('point/:id')

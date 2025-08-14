@@ -1,13 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('lead_sources')
 export class LeadSource {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+    tenant: Tenant;
 
   @Column()
   name: string;
@@ -18,7 +25,7 @@ export class LeadSource {
   @Column()
   category: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   acquisitionCost: number;
 
   @Column({ default: true })

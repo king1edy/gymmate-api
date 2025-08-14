@@ -1,15 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 import { Campaign } from './campaign.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('promotions')
 export class Promotion {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
-
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
+  
   @ManyToOne(() => Campaign)
   campaign: Campaign;
 

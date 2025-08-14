@@ -17,9 +17,9 @@ export class AccessService {
   ) {}
 
   // Access Points Management
-  async getAccessPoints(gymId: string) {
+  async getAccessPoints(tenantId: string) {
     return this.accessControlRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
       relations: ['area'],
     });
   }

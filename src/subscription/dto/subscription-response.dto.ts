@@ -5,7 +5,7 @@ export class SubscriptionResponseDto {
   id: string;
 
   @ApiProperty()
-  gymId: string;
+  tenantId: string;
 
   @ApiProperty()
   planName: string;

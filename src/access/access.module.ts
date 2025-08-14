@@ -7,13 +7,7 @@ import { AccessController } from './access.controller';
 import { AccessService } from './access.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      AccessControl,
-      AccessLog,
-      AccessCard,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([AccessControl, AccessLog, AccessCard])],
   controllers: [AccessController],
   providers: [AccessService],
   exports: [TypeOrmModule, AccessService],

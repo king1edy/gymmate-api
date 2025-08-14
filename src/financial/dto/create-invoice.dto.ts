@@ -1,5 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsUUID, IsOptional, IsDateString, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  IsOptional,
+  IsDateString,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class InvoiceLineItemDto {
@@ -23,7 +32,9 @@ export class InvoiceLineItemDto {
   @IsNotEmpty()
   totalPrice: number;
 
-  @ApiPropertyOptional({ description: 'Type of item (e.g., membership, service)' })
+  @ApiPropertyOptional({
+    description: 'Type of item (e.g., membership, service)',
+  })
   @IsString()
   @IsOptional()
   itemType?: string;
@@ -90,7 +101,10 @@ export class CreateInvoiceDto {
   @IsOptional()
   notes?: string;
 
-  @ApiProperty({ type: [InvoiceLineItemDto], description: 'List of items in the invoice' })
+  @ApiProperty({
+    type: [InvoiceLineItemDto],
+    description: 'List of items in the invoice',
+  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => InvoiceLineItemDto)

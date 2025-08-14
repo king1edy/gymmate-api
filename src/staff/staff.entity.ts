@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../user/user.entity';
+import { StaffSchedule } from '../types/interfaces';
 
 @Entity('staff')
 export class Staff {
@@ -25,7 +33,7 @@ export class Staff {
   employmentType: string;
 
   @Column({ type: 'jsonb', nullable: true })
-  defaultSchedule: any;
+  defaultSchedule: StaffSchedule[]; // trainers schedule
 
   @Column({ type: 'jsonb', default: '[]' })
   permissions: string[];

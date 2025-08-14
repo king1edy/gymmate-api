@@ -8,11 +8,7 @@ import { FinancialService } from './financial.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      PaymentMethod,
-      Invoice,
-      InvoiceLineItem,
-    ]),
+    TypeOrmModule.forFeature([PaymentMethod, Invoice, InvoiceLineItem]),
   ],
   controllers: [FinancialController],
   providers: [FinancialService],

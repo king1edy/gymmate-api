@@ -8,11 +8,7 @@ import { MembershipService } from './membership.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      MembershipPlan,
-      Member,
-      MemberMembership,
-    ]),
+    TypeOrmModule.forFeature([MembershipPlan, Member, MemberMembership]),
   ],
   controllers: [MembershipController],
   providers: [MembershipService],

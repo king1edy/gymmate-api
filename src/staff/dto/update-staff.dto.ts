@@ -1,5 +1,11 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsNumber, IsString, IsDateString, IsEmail } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsString,
+  IsDateString,
+  IsEmail,
+} from 'class-validator';
 
 export class UpdateStaffDto {
   @ApiPropertyOptional({ description: 'First name of the staff member' })

@@ -1,29 +1,38 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsBoolean, IsArray, IsDate, IsOptional, IsEnum, IsUUID } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsArray,
+  IsDate,
+  IsOptional,
+  IsEnum,
+  IsUUID,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export enum PlanName {
   STARTER = 'starter',
   PROFESSIONAL = 'professional',
-  ENTERPRISE = 'enterprise'
+  ENTERPRISE = 'enterprise',
 }
 
 export enum SubscriptionStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
   PENDING = 'pending',
-  CANCELLED = 'cancelled'
+  CANCELLED = 'cancelled',
 }
 
 export enum BillingCycle {
   MONTHLY = 'monthly',
-  YEARLY = 'yearly'
+  YEARLY = 'yearly',
 }
 
 export class CreateSubscriptionDto {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
   @IsUUID()
-  gymId: string;
+  tenantId: string;
 
   @ApiProperty({ enum: PlanName, example: PlanName.STARTER })
   @IsEnum(PlanName)

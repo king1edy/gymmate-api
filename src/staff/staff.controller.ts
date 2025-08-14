@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { Roles } from '../auth/roles.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Staff - Staff Management Endpoints (Members, Trainers, Schedule, Certifications)')
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
@@ -55,30 +66,30 @@ export class StaffController {
   }
 
   // Schedule and Availability Endpoints
-  @Get('trainers/available/:gymId')
+  @Get('trainers/available/:tenantId')
   async getAvailableTrainers(
-    @Param('gymId') gymId: string,
-    @Query('date') date: Date,
+    @Param('tenantId') tenantId: string,
+    //@Query('date') date: Date,
   ) {
-    return this.staffService.getAvailableTrainers(gymId, date);
+    return this.staffService.getAvailableTrainers(tenantId);
   }
 
   @Get('trainer/:id/schedule')
   async getTrainerSchedule(
     @Param('id') id: string,
-    @Query('startDate') startDate: Date,
-    @Query('endDate') endDate: Date,
+    // @Query('startDate') startDate: Date,
+    // @Query('endDate') endDate: Date,
   ) {
-    return this.staffService.getTrainerSchedule(id, startDate, endDate);
+    return this.staffService.getTrainerSchedule(id); //, startDate, endDate); return and fix/improve this I need to be able to get trainer based on set schedule
   }
 
   @Get('department/:id/schedule')
   @Roles('admin', 'manager')
   async getStaffSchedule(
     @Param('id') departmentId: string,
-    @Query('date') date: Date,
+    // @Query('date') date: Date,
   ) {
-    return this.staffService.getStaffSchedule(departmentId, date);
+    return this.staffService.getStaffSchedule(departmentId); // Same as above method
   }
 
   @Put('trainer/:id/availability')
@@ -92,10 +103,7 @@ export class StaffController {
 
   @Put('member/:id/schedule')
   @Roles('admin', 'manager')
-  async updateStaffSchedule(
-    @Param('id') id: string,
-    @Body() schedule: any,
-  ) {
+  async updateStaffSchedule(@Param('id') id: string, @Body() schedule: any) {
     return this.staffService.updateStaffSchedule(id, schedule);
   }
 
@@ -113,5 +121,12 @@ export class StaffController {
   @Roles('admin', 'manager')
   async getExpiredCertifications(@Param('gymId') gymId: string) {
     return this.staffService.getExpiredCertifications(gymId);
+  }
+
+  // Delete staff user
+  @Delete('staff/:id')
+  @Roles('admin')
+  async deleteStaff(@Param('id') id: string) {
+    return this.staffService.softDeleteStaffMember(id);
   }
 }

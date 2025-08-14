@@ -22,7 +22,9 @@ export class UpdateMembershipDto {
   @IsOptional()
   status?: string;
 
-  @ApiPropertyOptional({ description: 'Any special notes about the membership' })
+  @ApiPropertyOptional({
+    description: 'Any special notes about the membership',
+  })
   @IsString()
   @IsOptional()
   notes?: string;

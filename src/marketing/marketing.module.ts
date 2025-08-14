@@ -8,14 +8,7 @@ import { MarketingController } from './marketing.controller';
 import { MarketingService } from './marketing.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Campaign,
-      Promotion,
-      LeadSource,
-      Lead,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([Campaign, Promotion, LeadSource, Lead])],
   controllers: [MarketingController],
   providers: [MarketingService],
   exports: [TypeOrmModule, MarketingService],
