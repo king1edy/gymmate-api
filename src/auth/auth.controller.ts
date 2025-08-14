@@ -27,7 +27,7 @@ import { AuthResponseDto } from './dto/auth-response.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserRole } from '../user/dto/UserRole';
 
-@ApiTags('Authentication')
+@ApiTags('Auth - Authentication Endpoints (Users, Login, Registration, Password Management)')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

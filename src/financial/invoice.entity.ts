@@ -6,16 +6,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
 import { Member } from '../membership/member.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('invoices')
 export class Invoice {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
 
   @ManyToOne(() => Member)
   member: Member;

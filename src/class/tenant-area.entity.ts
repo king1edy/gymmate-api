@@ -5,15 +5,15 @@ import {
   ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
-@Entity('gym_areas')
-export class GymArea {
+@Entity('tenant_areas')
+export class TenantArea {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
 
   @Column()
   name: string;

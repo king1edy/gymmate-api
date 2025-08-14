@@ -8,11 +8,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { MarketingService } from './marketing.service';
+import { CreateCampaignDto } from './dto/create-campaign.dto';
 
+@ApiTags('Marketing - Marketing Management Endpoints (Campaigns, Promotions, Lead Sources, Leads, Analytics)')
 @Controller('marketing')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MarketingController {
@@ -33,7 +36,7 @@ export class MarketingController {
 
   @Post('campaign')
   @Roles('admin')
-  async createCampaign(@Body() data: any) {
+  async createCampaign(@Body() data: CreateCampaignDto) {
     return this.marketingService.createCampaign(data);
   }
 

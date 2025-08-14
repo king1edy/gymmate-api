@@ -3,12 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Subscription } from './subscription.entity';
 import { SubscriptionService } from './subscription.service';
 import { SubscriptionController } from './subscription.controller';
-import { GymModule } from '../gym/gym.module';
+import { TenantModule } from '../tenant/tenant.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Subscription]),
-    GymModule, // Import GymModule to use its TypeORM repository
+    TenantModule, // Import GymModule to use its TypeORM repository
   ],
   controllers: [SubscriptionController],
   providers: [SubscriptionService],

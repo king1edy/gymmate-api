@@ -32,7 +32,7 @@ export enum BillingCycle {
 export class CreateSubscriptionDto {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
   @IsUUID()
-  gymId: string;
+  tenantId: string;
 
   @ApiProperty({ enum: PlanName, example: PlanName.STARTER })
   @IsEnum(PlanName)

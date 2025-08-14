@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
+import { JwtPayload } from '../types/interfaces';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -75,7 +76,13 @@ describe('AuthService', () => {
       };
       usersRepository.findOne.mockResolvedValue(mockUser);
 
-      const result = await service.validateUser({ sub: '1', email: 'test@example.com', roles: ['MEMBER'], permissions: [] });
+      const payload: JwtPayload = { 
+        sub: '1', 
+        email: 'test@example.com', 
+        roles: ['MEMBER'], 
+        tenantId: '00000000-0000-0000-0000-000000000000' 
+      };
+      const result = await service.validateUser(payload);
       expect(result).toBeDefined();
       expect(result.id).toBe('1');
     });
@@ -83,8 +90,14 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       usersRepository.findOne.mockResolvedValue(null);
       
+      const payload: JwtPayload = { 
+        sub: '1', 
+        email: 'test@example.com', 
+        roles: [], 
+        tenantId: '00000000-0000-0000-0000-000000000000' 
+      };
       await expect(
-        service.validateUser({ sub: '1', email: 'test@example.com', roles: [], permissions: [] })
+        service.validateUser(payload)
       ).rejects.toThrow();
     });
   });
@@ -100,6 +113,7 @@ describe('AuthService', () => {
           firstName: 'Test',
           lastName: 'User',
           phone: '1234567890',
+          tenantId: '00000000-0000-0000-0000-000000000000',
         })
       ).rejects.toThrow();
     });
@@ -125,6 +139,7 @@ describe('AuthService', () => {
         firstName: 'Test',
         lastName: 'User',
         phone: '1234567890',
+        tenantId: '00000000-0000-0000-0000-000000000000',
       });
 
       expect(result.user).toBeDefined();
@@ -145,7 +160,7 @@ describe('AuthService', () => {
       };
 
       usersRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
+      jest.spyOn(bcrypt as any, 'compare').mockResolvedValue(true);
 
       const result = await service.login({
         email: 'test@example.com',
@@ -163,7 +178,7 @@ describe('AuthService', () => {
         email: 'test@example.com',
         passwordHash: 'hashedPassword',
       });
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
+      jest.spyOn(bcrypt as any, 'compare').mockResolvedValue(false);
 
       await expect(
         service.login({

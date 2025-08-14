@@ -1,5 +1,14 @@
 // src/types/interfaces/index.ts
 
+// Base Interfaces
+export interface BaseEntity {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Tenant
+
 // Staff
 export interface StaffSchedule {
   id: number;

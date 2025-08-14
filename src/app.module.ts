@@ -10,7 +10,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-// import { GymModule } from './gym/gym.module';
+import { TenantModule } from './tenant/tenant.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { MembershipModule } from './membership/membership.module';
 import { StaffModule } from './staff/staff.module';
@@ -19,7 +19,6 @@ import { EquipmentModule } from './equipment/equipment.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { AccessModule } from './access/access.module';
 import { FinancialModule } from './financial/financial.module';
-import { TenantModule } from './tenant/tenant.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
@@ -105,8 +104,6 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     // EmailModule,
     // SmsModule,
     // FileUploadModule,
-
-    // GymModule,
   ],
   controllers: [AppController],
   providers: [

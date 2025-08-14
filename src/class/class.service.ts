@@ -6,7 +6,7 @@ import { ClassCategory } from './class-category.entity';
 import { ClassSchedule } from './class-schedule.entity';
 import { ClassBooking } from './class-booking.entity';
 import { ClassWaitlist } from './class-waitlist.entity';
-import { GymArea } from './gym-area.entity';
+import { TenantArea } from '../class/tenant-area.entity';
 
 @Injectable()
 export class ClassService {
@@ -21,13 +21,13 @@ export class ClassService {
     private classBookingRepository: Repository<ClassBooking>,
     @InjectRepository(ClassWaitlist)
     private classWaitlistRepository: Repository<ClassWaitlist>,
-    @InjectRepository(GymArea)
-    private gymAreaRepository: Repository<GymArea>,
+    @InjectRepository(TenantArea)
+    private tenantAreaRepository: Repository<TenantArea>,
   ) {}
 
-  async getClasses(gymId: string) {
+  async getClasses(tenantId: string) {
     return this.classRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
       relations: ['category', 'gym'],
     });
   }
@@ -44,9 +44,29 @@ export class ClassService {
     return this.classRepository.save(newClass);
   }
 
-  async getSchedules(gymId: string, filter: any = {}) {
+  // Update class method
+  async updateClass(id: string, data: any) {
+    await this.classRepository.update(id, data);
+    return this.getClassById(id);
+  }
+
+  async getClassByCategory(categoryId: string) {
+    return this.classRepository.find({
+      where: { category: { id: categoryId } },
+      relations: ['category', 'tenant', 'area'],
+    });
+  }
+
+  async getClassByTenant(tenantId: string) {
+    return this.classRepository.find({
+      where: { tenant: { id: tenantId } },
+      relations: ['area', 'tenant'],
+    });
+  }
+
+  async getSchedules(tenantId: string, filter: any = {}) {
     return this.classScheduleRepository.find({
-      where: { class: { gym: { id: gymId } }, ...filter },
+      where: { class: { tenant: { id: tenantId } }, ...filter },
       relations: ['class', 'trainer', 'area'],
     });
   }
@@ -63,15 +83,15 @@ export class ClassService {
     return this.classBookingRepository.save(booking);
   }
 
-  async getGymAreas(gymId: string) {
-    return this.gymAreaRepository.find({
-      where: { gym: { id: gymId } },
+  async getTenantAreas(tenantId: string) {
+    return this.tenantAreaRepository.find({
+      where: { tenant: { id: tenantId } },
     });
   }
 
-  async getCategories(gymId: string) {
+  async getCategories(tenantId: string) {
     return this.classCategoryRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
     });
   }
 }

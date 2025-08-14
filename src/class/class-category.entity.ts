@@ -5,15 +5,18 @@ import {
   ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
+/**
+ * Represents a category of classes in the gym.
+ */
 @Entity('class_categories')
 export class ClassCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+    tenant: Tenant;
 
   @Column()
   name: string;
