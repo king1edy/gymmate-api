@@ -7,10 +7,13 @@ import { User } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { Tenant } from '../tenant/tenant.entity';
+import { Role } from '../roles/role.entity';
+import { UserService } from '../user/user.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Role, Tenant]), // Import User, Role, and Tenant entities
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -22,7 +25,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
     ConfigModule,
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, UserService, JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

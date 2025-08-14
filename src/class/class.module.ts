@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassCategory } from './class-category.entity';
 import { Class } from './class.entity';
-import { GymArea } from './gym-area.entity';
+import { TenantArea } from './tenant-area.entity';
 import { ClassSchedule } from './class-schedule.entity';
 import { ClassBooking } from './class-booking.entity';
 import { ClassWaitlist } from './class-waitlist.entity';
@@ -14,7 +14,7 @@ import { ClassService } from './class.service';
     TypeOrmModule.forFeature([
       ClassCategory,
       Class,
-      GymArea,
+      TenantArea,
       ClassSchedule,
       ClassBooking,
       ClassWaitlist,

@@ -6,19 +6,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
-import { GymArea } from '../class/gym-area.entity';
+import { Tenant } from '../tenant/tenant.entity';
+import { TenantArea } from '../class/tenant-area.entity';
 
 @Entity('access_control')
 export class AccessControl {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
 
-  @ManyToOne(() => GymArea)
-  area: GymArea;
+  @ManyToOne(() => TenantArea)
+  area: TenantArea;
 
   @Column()
   name: string;

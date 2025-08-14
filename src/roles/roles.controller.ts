@@ -19,7 +19,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { RequirePermissions } from '../auth/decorators/permissions.decorator';
 import { AssignPermissionDto } from './dto/assign-permission.dto';
 
-@ApiTags('roles')
+@ApiTags('Roles - Roles Management Endpoints')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RBACGuard)
 @Controller('roles')

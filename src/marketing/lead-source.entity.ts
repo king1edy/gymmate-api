@@ -6,15 +6,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('lead_sources')
 export class LeadSource {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+    tenant: Tenant;
 
   @Column()
   name: string;

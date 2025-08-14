@@ -10,7 +10,9 @@ import {
 } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { Roles } from '../auth/roles.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Staff - Staff Management Endpoints (Members, Trainers, Schedule, Certifications)')
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
@@ -64,12 +66,12 @@ export class StaffController {
   }
 
   // Schedule and Availability Endpoints
-  @Get('trainers/available/:gymId')
+  @Get('trainers/available/:tenantId')
   async getAvailableTrainers(
-    @Param('gymId') gymId: string,
+    @Param('tenantId') tenantId: string,
     //@Query('date') date: Date,
   ) {
-    return this.staffService.getAvailableTrainers(gymId);
+    return this.staffService.getAvailableTrainers(tenantId);
   }
 
   @Get('trainer/:id/schedule')

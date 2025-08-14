@@ -37,13 +37,13 @@ export class AddRbacTables1725362001234 implements MigrationInterface {
       // Check if needed columns exist and add them if they don't
       const roleColumns = await queryRunner.getTable('roles');
 
-      if (!roleColumns.findColumnByName('isSystem')) {
+      if (roleColumns && !roleColumns.findColumnByName('isSystem')) {
         await queryRunner.query(
           `ALTER TABLE "roles" ADD COLUMN "isSystem" boolean NOT NULL DEFAULT false;`,
         );
       }
 
-      if (!roleColumns.findColumnByName('description')) {
+      if (roleColumns && !roleColumns.findColumnByName('description')) {
         await queryRunner.query(
           `ALTER TABLE "roles" ADD COLUMN "description" varchar;`,
         );
@@ -74,7 +74,7 @@ export class AddRbacTables1725362001234 implements MigrationInterface {
 
     // Add refreshToken column to users table if it doesn't exist
     const usersTable = await queryRunner.getTable('users');
-    if (!usersTable.findColumnByName('refreshToken')) {
+    if (usersTable && !usersTable.findColumnByName('refreshToken')) {
       await queryRunner.query(
         `ALTER TABLE "users" ADD COLUMN "refreshToken" varchar;`,
       );

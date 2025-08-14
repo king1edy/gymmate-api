@@ -17,7 +17,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../user/dto/UserRole';
 
-@ApiTags('tenants')
+@ApiTags('Tenants - Tenant(Gym) Management Endpoints')
 @Controller('tenants')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class TenantController {

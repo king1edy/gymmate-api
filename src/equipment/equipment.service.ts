@@ -40,9 +40,9 @@ export class EquipmentService {
     return this.getEquipmentById(id);
   }
 
-  async getCategories(gymId: string) {
+  async getCategories(tenantId: string) {
     return this.categoryRepository.find({
-      where: { gym: { id: gymId } },
+      where: { tenant: { id: tenantId } },
     });
   }
 
@@ -64,12 +64,12 @@ export class EquipmentService {
     return this.maintenanceRepository.save(maintenance);
   }
 
-  async getUpcomingMaintenance(gymId: string) {
+  async getUpcomingMaintenance(tenantId: string) {
     const today = new Date();
     const upcomingDate = new Date(today.setDate(today.getDate() + 30));
     return this.equipmentRepository.find({
       where: {
-        gym: { id: gymId },
+        tenant: { id: tenantId },
         nextMaintenanceDate: LessThanOrEqual(upcomingDate),
       },
       relations: ['category', 'area'],

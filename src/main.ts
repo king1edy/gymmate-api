@@ -15,14 +15,7 @@ async function bootstrap() {
     .setTitle('GymMate API')
     .setDescription('The GymMate API documentation')
     .setVersion('1.0')
-    .addTag('auth', 'Authentication endpoints')
-    .addTag('users', 'User management endpoints')
-    .addTag('gyms', 'Gym management endpoints')
-    .addTag('access', 'Access control endpoints')
-    .addTag('equipment', 'Equipment management endpoints')
-    // .addTag('financial', 'Financial management endpoints')
-    .addTag('marketing', 'Marketing management endpoints')
-    .addTag('classes', 'Class management endpoints')
+
     .addBearerAuth()
     .build();
 

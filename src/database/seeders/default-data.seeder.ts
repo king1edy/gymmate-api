@@ -213,7 +213,7 @@ export class DefaultDataSeeder {
         lastName: 'Admin',
         status: UserStatus.ACTIVE,
         emailVerified: true,
-        roles: [adminRole],
+        roles: adminRole ? [adminRole] : [],
         tenantId: '00000000-0000-0000-0000-000000000000', // Default tenant
       },
       {
@@ -223,7 +223,7 @@ export class DefaultDataSeeder {
         lastName: 'Doe',
         status: UserStatus.ACTIVE,
         emailVerified: true,
-        roles: [memberRole],
+        roles: memberRole ? [memberRole] : [],
         tenantId: '00000000-0000-0000-0000-000000000000', // Default tenant
       },
     ];

@@ -7,17 +7,18 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
 import { Promotion } from './promotion.entity';
 import { Lead } from './lead.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Entity('campaigns')
 export class Campaign {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
+  
 
   @Column()
   name: string;

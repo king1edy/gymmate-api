@@ -3,17 +3,18 @@ import {
   Get,
   Post,
   Put,
-  Delete,
   Body,
   Param,
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ClassService } from './class.service';
 
+@ApiTags('Classes - Class Management Endpoints (Schedules, Bookings, Areas, Categories)')
 @Controller('classes')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class ClassController {
@@ -57,13 +58,22 @@ export class ClassController {
 
   @Get('areas')
   @Roles('admin', 'staff', 'trainer', 'member')
-  async getGymAreas(@Query('gymId') gymId: string) {
-    return this.classService.getGymAreas(gymId);
+  async getTenantAreas(@Query('gymId') gymId: string) {
+    return this.classService.getTenantAreas(gymId);
   }
 
   @Get('categories')
   @Roles('admin', 'staff', 'trainer', 'member')
   async getCategories(@Query('gymId') gymId: string) {
     return this.classService.getCategories(gymId);
+  }
+
+  // Additional endpoints for class waitlists, categories, and areas can be added here
+
+  // update class, schedule, booking, and waitlist methods can be added similarly
+  @Put(':id')
+  @Roles('admin')
+  async updateClass(@Param('id') id: string, @Body() data: any) {
+    return this.classService.updateClass(id, data);
   }
 }

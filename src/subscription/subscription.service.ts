@@ -9,44 +9,44 @@ import { Subscription } from './subscription.entity';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { SubscriptionResponseDto } from './dto/subscription-response.dto';
-import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 
 @Injectable()
 export class SubscriptionService {
   constructor(
     @InjectRepository(Subscription)
     private subscriptionRepository: Repository<Subscription>,
-    @InjectRepository(Gym)
-    private gymRepository: Repository<Gym>,
+    @InjectRepository(Tenant)
+    private tenantRepository: Repository<Tenant>,
   ) {}
 
   async create(
     createSubscriptionDto: CreateSubscriptionDto,
   ): Promise<SubscriptionResponseDto> {
-    const gym = await this.gymRepository.findOne({
-      where: { id: createSubscriptionDto.gymId },
+    const tenant = await this.tenantRepository.findOne({
+      where: { id: createSubscriptionDto.tenantId },
     });
-    if (!gym) {
+    if (!tenant) {
       throw new NotFoundException(
-        `Gym with ID ${createSubscriptionDto.gymId} not found`,
+        `Tenant with ID ${createSubscriptionDto.tenantId} not found`,
       );
     }
 
-    // Check if gym already has an active subscription
+    // Check if tenant already has an active subscription
     const existingSubscription = await this.subscriptionRepository.findOne({
       where: {
-        gym: { id: createSubscriptionDto.gymId },
+        tenant: { id: createSubscriptionDto.tenantId },
         status: 'active',
       },
     });
 
     if (existingSubscription) {
-      throw new BadRequestException('Gym already has an active subscription');
+      throw new BadRequestException('Tenant already has an active subscription');
     }
 
     const subscription = this.subscriptionRepository.create({
       ...createSubscriptionDto,
-      gym,
+      tenant,
     });
 
     await this.subscriptionRepository.save(subscription);
@@ -55,7 +55,7 @@ export class SubscriptionService {
 
   async findAll(): Promise<SubscriptionResponseDto[]> {
     const subscriptions = await this.subscriptionRepository.find({
-      relations: ['gym'],
+      relations: ['tenant'],
     });
     return subscriptions.map((subscription) =>
       this.toResponseDto(subscription),
@@ -65,7 +65,7 @@ export class SubscriptionService {
   async findOne(id: string): Promise<SubscriptionResponseDto> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { id },
-      relations: ['gym'],
+      relations: ['tenant'],
     });
     if (!subscription) {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
@@ -73,13 +73,13 @@ export class SubscriptionService {
     return this.toResponseDto(subscription);
   }
 
-  async findByGymId(gymId: string): Promise<SubscriptionResponseDto> {
+  async findByTenantId(tenantId: string): Promise<SubscriptionResponseDto> {
     const subscription = await this.subscriptionRepository.findOne({
-      where: { gym: { id: gymId } },
-      relations: ['gym'],
+      where: { tenant: { id: tenantId } },
+      relations: ['tenant'],
     });
     if (!subscription) {
-      throw new NotFoundException(`Subscription not found for gym ID ${gymId}`);
+      throw new NotFoundException(`Subscription not found for tenant ID ${tenantId}`);
     }
     return this.toResponseDto(subscription);
   }
@@ -90,7 +90,7 @@ export class SubscriptionService {
   ): Promise<SubscriptionResponseDto> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { id },
-      relations: ['gym'],
+      relations: ['tenant'],
     });
     if (!subscription) {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
@@ -107,7 +107,7 @@ export class SubscriptionService {
   async cancel(id: string, reason: string): Promise<SubscriptionResponseDto> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { id },
-      relations: ['gym'],
+      relations: ['tenant'],
     });
     if (!subscription) {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
@@ -133,9 +133,9 @@ export class SubscriptionService {
     const responseDto = new SubscriptionResponseDto();
     Object.assign(responseDto, {
       ...subscription,
-      gymId: subscription.gym.id,
+      tenantId: subscription.tenant.id,
     });
-    delete responseDto['gym'];
+    delete responseDto['tenant'];
     return responseDto;
   }
 }

@@ -23,7 +23,7 @@ import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { SubscriptionResponseDto } from './dto/subscription-response.dto';
 import { SubscriptionService } from './subscription.service';
 
-@ApiTags('subscriptions')
+@ApiTags('Subscriptions - Subscription Management Endpoints')
 @ApiBearerAuth()
 @Controller('subscriptions')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -56,17 +56,17 @@ export class SubscriptionController {
     return this.subscriptionService.findAll();
   }
 
-  @Get('gym/:gymId')
-  @ApiOperation({ summary: 'Get subscription by gym ID' })
+  @Get('tenant/:tenantId')
+  @ApiOperation({ summary: 'Get subscription by tenant ID - gym ID' })
   @ApiResponse({
     status: 200,
     description: 'Return subscription for gym',
     type: SubscriptionResponseDto,
   })
   async findByGymId(
-    @Param('gymId') gymId: string,
+    @Param('tenantId') tenantId: string,
   ): Promise<SubscriptionResponseDto> {
-    return this.subscriptionService.findByGymId(gymId);
+    return this.subscriptionService.findByTenantId(tenantId);
   }
 
   @Get(':id')

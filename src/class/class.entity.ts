@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Gym } from '../gym/gym.entity';
+import { Tenant } from '../tenant/tenant.entity';
 import { ClassCategory } from './class-category.entity';
 
 @Entity('classes')
@@ -14,8 +14,11 @@ export class Class {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Gym)
-  gym: Gym;
+  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  tenant: Tenant;
+
+  @Column({ type: 'uuid' })
+  tenantId: string;
 
   @ManyToOne(() => ClassCategory)
   category: ClassCategory;

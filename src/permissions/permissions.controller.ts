@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RBACGuard } from '../auth/guards/rbac.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 
-@ApiTags('permissions')
+@ApiTags('Permissions - Permissions Management Endpoints')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RBACGuard)
 @Controller('permissions')
