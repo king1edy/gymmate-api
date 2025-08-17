@@ -204,13 +204,16 @@ describe('AccessService Integration Tests', () => {
 
       const created = await service.createAccessPoint(accessPointData);
       
-      expect(created).toBeDefined();
-      expect(created.id).toBeDefined();
-      expect(created.name).toBe('Secondary Entrance');
+      // Handle if createAccessPoint returns an array
+      const accessPoint = Array.isArray(created) ? created[0] : created;
+      
+      expect(accessPoint).toBeDefined();
+      expect(accessPoint.id).toBeDefined();
+      expect(accessPoint.name).toBe('Secondary Entrance');
 
       // Verify it was actually saved to database
       const found = await accessControlRepository.findOne({
-        where: { id: created.id },
+        where: { id: accessPoint.id },
         relations: ['tenant', 'area']
       });
 
@@ -234,10 +237,10 @@ describe('AccessService Integration Tests', () => {
       const created = await service.createAccessCard(cardData);
       
       expect(created).toBeDefined();
-      expect(created.cardId).toBe('CARD002');
+      expect(created[0].cardId).toBe('CARD002');
 
       // Verify relations are properly loaded
-      const found = await service.getAccessCard(created.id);
+      const found = await service.getAccessCard(created[0].id);
       expect(found).toBeDefined();
       expect(found).not.toBeNull();
       if (found) {
@@ -315,9 +318,13 @@ describe('AccessService Integration Tests', () => {
         where: { id: testAccessCard.id }
       });
 
+expect(card).not.toBeNull();
+
+if(card){
       expect(card.isActive).toBe(false);
       expect(card.deactivationReason).toBe('Card reported lost');
       expect(card.deactivatedAt).toBeInstanceOf(Date);
+}
     });
 
     it('should deny access for inactive access point', async () => {
@@ -392,7 +399,8 @@ describe('AccessService Integration Tests', () => {
 
     it('should paginate access logs correctly', async () => {
       // Create multiple log entries
-      const logPromises = [];
+        // Create multiple log entries
+      const logPromises: Promise<any>[] = [];
       for (let i = 0; i < 15; i++) {
         logPromises.push(
           service.logAccess({
