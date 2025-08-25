@@ -7,7 +7,9 @@ export class CampaignResponseDto {
   @ApiProperty({ description: 'Name of the marketing campaign' })
   name: string;
 
-  @ApiProperty({ description: 'ID of the tenant - gym this campaign belongs to' })
+  @ApiProperty({
+    description: 'ID of the tenant - gym this campaign belongs to',
+  })
   tenantId: string;
 
   @ApiProperty({ description: 'Description of the campaign' })

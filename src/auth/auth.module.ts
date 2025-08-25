@@ -6,8 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { Tenant } from '../tenant/tenant.entity';
+import { JwtStrategy } from '../common/strategies/jwt.strategy';
+import { Tenant } from '../tenant/entities/tenant.entity';
 import { Role } from '../roles/role.entity';
 import { UserService } from '../user/user.service';
 

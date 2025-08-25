@@ -12,10 +12,11 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TenantService } from './tenant.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../user/dto/UserRole';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Tenants - Tenant(Gym) Management Endpoints')
 @Controller('tenants')
@@ -32,7 +33,8 @@ export class TenantController {
   }
 
   @Get()
-  @Roles(UserRole.ADMIN)
+  // @Roles(UserRole.ADMIN)
+  @Public()
   @ApiOperation({ summary: 'Get all tenants' })
   findAll() {
     return this.tenantService.findAll();

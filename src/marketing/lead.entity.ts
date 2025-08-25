@@ -10,7 +10,7 @@ import { TenantModule } from '../tenant/tenant.module';
 import { LeadSource } from './lead-source.entity';
 import { Campaign } from './campaign.entity';
 import { User } from '../user/user.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 @Entity('leads')
 export class Lead {

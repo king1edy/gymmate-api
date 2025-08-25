@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 import { TenantArea } from '../class/tenant-area.entity';
 
 @Entity('access_control')

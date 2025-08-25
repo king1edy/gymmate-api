@@ -1,20 +1,11 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { EquipmentCategory } from './equipment-category.entity';
 import { TenantArea } from '../class/tenant-area.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
+import { BaseEntity } from '../types/interfaces';
 
 @Entity('equipment')
-export class Equipment {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Equipment extends BaseEntity {
   @ManyToOne(() => Tenant, (tenant) => tenant.id)
   tenant: Tenant;
 
@@ -78,10 +69,4 @@ export class Equipment {
 
   @Column({ nullable: true })
   qrCode: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
