@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 
 /**
@@ -36,8 +36,14 @@ export class TokenMigrationInterceptor implements NestInterceptor {
           const decoded = this.jwtService.decode(token);
 
           // If it's an old token format (has role but not roles/permissions)
-          if (decoded && decoded.role && (!decoded.roles || !decoded.permissions)) {
-            this.logger.log(`Detected legacy token format for user ${decoded.sub}`);
+          if (
+            decoded &&
+            decoded.role &&
+            (!decoded.roles || !decoded.permissions)
+          ) {
+            this.logger.log(
+              `Detected legacy token format for user ${decoded.sub}`,
+            );
             // We could trigger token upgrade here if needed
           }
         } catch (error) {

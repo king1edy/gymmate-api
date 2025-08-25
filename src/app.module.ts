@@ -22,7 +22,7 @@ import { FinancialModule } from './financial/financial.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -49,6 +49,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
         logging: process.env.NODE_ENV === 'development',
         migrations: ['dist/migrations/*.js'],
         migrationsRun: false,
+        entities: ['dist/**/*.entity.js'],
       }),
       inject: [ConfigService],
     }),

@@ -9,7 +9,12 @@ import {
   Ip,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -19,15 +24,17 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { RegisterDto } from './dto/register.dto';
-import { Public } from './decorators/public.decorator';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Public } from '../common/decorators/public.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { User } from '../user/user.entity';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserRole } from '../user/dto/UserRole';
 
-@ApiTags('Auth - Authentication Endpoints (Users, Login, Registration, Password Management)')
+@ApiTags(
+  'Auth - Authentication Endpoints (Users, Login, Registration, Password Management)',
+)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

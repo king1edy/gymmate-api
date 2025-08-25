@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Member } from '../membership/member.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 @Entity('invoices')
 export class Invoice {

@@ -49,7 +49,9 @@ export class UserService {
     // Find the roles
     let roles: Role[] = [];
     // Assign default member role if no roles specified
-    const defaultRole = await this.roleRepository.findOne({ where: { name: 'MEMBER' } });
+    const defaultRole = await this.roleRepository.findOne({
+      where: { name: 'MEMBER' },
+    });
     if (!defaultRole) {
       throw new NotFoundException('Default member role not found');
     }

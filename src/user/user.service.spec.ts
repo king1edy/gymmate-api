@@ -127,11 +127,11 @@ describe('UserService', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     rolesRepository.findOne.mockResolvedValue(mockRole);
     usersRepository.create.mockReturnValue(mockUser);
     usersRepository.save.mockResolvedValue(mockUser);
-    
+
     const user = await service.create({
       firstName: 'Test',
       lastName: 'User',
@@ -139,7 +139,7 @@ describe('UserService', () => {
       password: 'password',
       tenantId: 'tenant1',
     });
-    
+
     expect(user).toEqual({
       id: mockUser.id,
       firstName: mockUser.firstName,
@@ -166,13 +166,13 @@ describe('UserService', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     usersRepository.findOne.mockResolvedValue(mockUser);
     usersRepository.save.mockResolvedValue({
       ...mockUser,
       email: 'updated@example.com',
     });
-    
+
     const result = await service.update('1', { email: 'updated@example.com' });
     expect(result).toEqual({
       id: mockUser.id,
@@ -199,7 +199,9 @@ describe('UserService', () => {
 
   it('should throw NotFoundException when user not found for update', async () => {
     usersRepository.findOne.mockResolvedValue(null);
-    await expect(service.update('999', { email: 'test@test.com' })).rejects.toThrow(NotFoundException);
+    await expect(
+      service.update('999', { email: 'test@test.com' }),
+    ).rejects.toThrow(NotFoundException);
   });
 
   it('should throw NotFoundException when user not found for remove', async () => {
@@ -209,13 +211,15 @@ describe('UserService', () => {
 
   it('should throw NotFoundException when default role not found', async () => {
     rolesRepository.findOne.mockResolvedValue(null);
-    
-    await expect(service.create({
-      firstName: 'Test',
-      lastName: 'User',
-      email: 'test@example.com',
-      password: 'password',
-      tenantId: 'tenant1',
-    })).rejects.toThrow(NotFoundException);
+
+    await expect(
+      service.create({
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@example.com',
+        password: 'password',
+        tenantId: 'tenant1',
+      }),
+    ).rejects.toThrow(NotFoundException);
   });
 });

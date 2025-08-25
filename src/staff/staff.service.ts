@@ -102,7 +102,7 @@ export class StaffService {
     }
 
     // get the trainer schedule here ...
-    trainer.defaultAvailability
+    trainer.defaultAvailability;
     return trainer;
   }
 

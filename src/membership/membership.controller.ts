@@ -10,12 +10,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 import { MembershipService } from './membership.service';
 
-@ApiTags('Membership - Membership Management Endpoints (Members, Plans, Memberships)')
+@ApiTags(
+  'Membership - Membership Management Endpoints (Members, Plans, Memberships)',
+)
 @Controller('membership')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MembershipController {

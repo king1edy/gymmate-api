@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Member } from './member.entity';
 import { MembershipPlan } from './membership-plan.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 @Entity('member_subscriptions')
 export class MemberMembership {
