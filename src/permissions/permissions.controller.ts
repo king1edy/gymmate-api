@@ -14,9 +14,9 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RBACGuard } from '../auth/guards/rbac.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RBACGuard } from '../common/guards/rbac.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('Permissions - Permissions Management Endpoints')
 @ApiBearerAuth()

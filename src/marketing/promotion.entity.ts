@@ -1,23 +1,13 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 
 import { Campaign } from './campaign.entity';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
+import { BaseEntity } from '../types/interfaces';
 
 @Entity('promotions')
-export class Promotion {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Promotion extends BaseEntity {
   @ManyToOne(() => Tenant, (tenant) => tenant.id)
   tenant: Tenant;
-  
   @ManyToOne(() => Campaign)
   campaign: Campaign;
 
@@ -76,10 +66,4 @@ export class Promotion {
     redemptions: number;
     revenue: number;
   };
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

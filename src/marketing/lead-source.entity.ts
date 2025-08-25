@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 @Entity('lead_sources')
 export class LeadSource {
@@ -14,7 +14,7 @@ export class LeadSource {
   id: string;
 
   @ManyToOne(() => Tenant, (tenant) => tenant.id)
-    tenant: Tenant;
+  tenant: Tenant;
 
   @Column()
   name: string;

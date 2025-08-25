@@ -83,7 +83,10 @@ export class CreateUserDto {
   @IsOptional()
   status?: UserStatus = UserStatus.PENDING_VERIFICATION;
 
-  @ApiPropertyOptional({ description: 'Whether email is verified', default: false })
+  @ApiPropertyOptional({
+    description: 'Whether email is verified',
+    default: false,
+  })
   @IsBoolean()
   @IsOptional()
   emailVerified?: boolean = false;

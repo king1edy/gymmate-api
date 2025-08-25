@@ -7,7 +7,7 @@ import {
 import { Role } from '../roles/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm'; // Add In operator
-import { Tenant } from './tenant.entity';
+import { Tenant } from './entities/tenant.entity';
 import { User } from '../user/user.entity';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
@@ -133,6 +133,14 @@ export class TenantService {
     }
 
     await this.cacheManager.set(cacheKey, tenant, this.CACHE_TTL);
+    return tenant;
+  }
+
+  async findByIdentifier(identifier: string): Promise<Tenant | null> {
+    const tenant = await this.tenantRepository.findOne({
+      where: [{ subdomain: identifier }, { id: identifier }],
+    });
+
     return tenant;
   }
 
@@ -266,7 +274,7 @@ export class TenantService {
       return cachedCount;
     }
 
-      const roleMapping = {
+    const roleMapping = {
       members: ['MEMBER'],
       staff: ['TRAINER', 'ADMIN', 'STAFF'],
     };
@@ -276,9 +284,11 @@ export class TenantService {
       .createQueryBuilder('user')
       .innerJoin('user.roles', 'role')
       .where('user.tenantId = :tenantId', { tenantId })
-      .andWhere('role.name IN (:...roleNames)', { roleNames: roleMapping[type] })
+      .andWhere('role.name IN (:...roleNames)', {
+        roleNames: roleMapping[type],
+      })
       .andWhere('user.isActive = :isActive', { isActive: true })
-      .getCount();    // Cache the count for a shorter period since it changes more frequently
+      .getCount(); // Cache the count for a shorter period since it changes more frequently
     await this.cacheManager.set(cacheKey, count, this.USAGE_CACHE_TTL);
     return count;
   }
@@ -289,6 +299,23 @@ export class TenantService {
   ): Promise<boolean> {
     const tenant = await this.findOne(tenantId);
     return tenant.featuresEnabled.includes(feature);
+  }
+
+  async validateTenantAccess(
+    tenantId: string,
+    features: string[],
+  ): Promise<boolean> {
+    const tenant = await this.findOne(tenantId);
+
+    // Check subscription status
+    if (tenant.subscriptionStatus !== 'active') {
+      return false;
+    }
+
+    // Check feature access
+    return features.every((feature) =>
+      tenant.featuresEnabled.includes(feature),
+    );
   }
 
   async getUsageStats(tenantId: string): Promise<{

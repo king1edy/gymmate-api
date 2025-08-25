@@ -14,13 +14,14 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UserService } from './user.service';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Users - User Management Endpoints')
 @ApiBearerAuth()
@@ -42,7 +43,8 @@ export class UserController {
   }
 
   @Get()
-  @Roles('admin')
+  // @Roles('admin')
+  @Public()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,

@@ -12,17 +12,17 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserType } from '../../types/interfaces';
 
-export class RegisterDto {  
+export class RegisterDto {
   @ApiProperty({ description: 'Tenant ID this user belongs to' })
   @IsUUID()
   @IsNotEmpty()
   tenantId: string;
-  
+
   @ApiProperty({ description: 'User email address' })
   @IsEmail()
   @IsNotEmpty()
   email: string;
-  
+
   @ApiProperty({ example: 'StrongPassword123!' })
   @ApiProperty({ description: 'User password' })
   @IsString()
@@ -56,10 +56,10 @@ export class RegisterDto {
   dateOfBirth?: string;
 
   @ApiPropertyOptional({
-      description: 'User type',
-      enum: UserType,
-      default: UserType.MEMBER,
-    })
+    description: 'User type',
+    enum: UserType,
+    default: UserType.MEMBER,
+  })
   @IsEnum(UserType)
   @IsOptional()
   userType?: UserType = UserType.MEMBER;

@@ -20,7 +20,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtPayload, AuthTokens } from '../types/interfaces';
 import { UserStatus, UserType } from '../types/interfaces';
-import { UserRole } from 'src/user/dto/UserRole';
+import { UserRole } from '../user/dto/UserRole';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,8 @@ export class AuthService {
   async register(
     registerDto: RegisterDto,
   ): Promise<{ user: User; tokens: AuthTokens }> {
-    const { email, password, firstName, lastName, phone, tenantId, userType } = registerDto;
+    const { email, password, firstName, lastName, phone, tenantId, userType } =
+      registerDto;
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
@@ -65,7 +66,9 @@ export class AuthService {
     });
 
     // Assign default role
-    const defaultRole = await this.usersService.getDefaultRole(userType || UserType.MEMBER);
+    const defaultRole = await this.usersService.getDefaultRole(
+      userType || UserType.MEMBER,
+    );
     if (!defaultRole) {
       throw new BadRequestException('Default role not found');
     }
@@ -159,6 +162,26 @@ export class AuthService {
 
   async logout(userId: string): Promise<void> {
     await this.userRepository.update(userId, { refreshToken: null });
+  }
+
+  // Additional methods for API service compatibility
+  getToken(): string | null {
+    // This method should be implemented based on your token storage strategy
+    // For now, returning null as this is a backend service
+    return null;
+  }
+
+  getUserInfo() {
+    // This method should return user information based on your auth strategy
+    // For now, returning basic structure
+    return {
+      id: null,
+      username: null,
+      email: null,
+      tenantId: null,
+      role: null,
+      permissions: [],
+    };
   }
 
   async forgotPassword(email: string): Promise<void> {
@@ -264,6 +287,7 @@ export class AuthService {
   private async generateTokens(user: User): Promise<AuthTokens> {
     const payload: JwtPayload = {
       sub: user.id,
+      preferred_username: user.firstName + ' ' + user.lastName,
       email: user.email,
       roles: user.roles?.map((role) => role.name) || [],
       tenantId: user.tenantId,
@@ -289,6 +313,18 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  // validate token
+  async validateToken(token: string): Promise<User> {
+    try {
+      const payload = this.jwtService.verify<JwtPayload>(token, {
+        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+      });
+      return await this.validateUser(payload);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
   private async updateRefreshToken(
     userId: string,
     refreshToken: string,
@@ -305,7 +341,7 @@ export class AuthService {
   }
 
   // Legacy methods for backward compatibility
-  async legacyLogin(user: any) {
+  legacyLogin(user: any) {
     const payload = {
       email: user.email,
       sub: user.id,
@@ -372,10 +408,9 @@ export class AuthService {
     };
   }
 
-  
-
   private sanitizeUser(user: User): Partial<User> {
-    const { passwordHash, refreshToken, passwordResetToken, ...sanitized } = user;
+    const { passwordHash, refreshToken, passwordResetToken, ...sanitized } =
+      user;
     return sanitized;
   }
 }

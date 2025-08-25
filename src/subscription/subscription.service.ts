@@ -9,7 +9,7 @@ import { Subscription } from './subscription.entity';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { SubscriptionResponseDto } from './dto/subscription-response.dto';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 @Injectable()
 export class SubscriptionService {
@@ -41,7 +41,9 @@ export class SubscriptionService {
     });
 
     if (existingSubscription) {
-      throw new BadRequestException('Tenant already has an active subscription');
+      throw new BadRequestException(
+        'Tenant already has an active subscription',
+      );
     }
 
     const subscription = this.subscriptionRepository.create({
@@ -79,7 +81,9 @@ export class SubscriptionService {
       relations: ['tenant'],
     });
     if (!subscription) {
-      throw new NotFoundException(`Subscription not found for tenant ID ${tenantId}`);
+      throw new NotFoundException(
+        `Subscription not found for tenant ID ${tenantId}`,
+      );
     }
     return this.toResponseDto(subscription);
   }

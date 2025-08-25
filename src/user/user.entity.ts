@@ -1,25 +1,19 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
   Unique,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Tenant } from '../tenant/tenant.entity';
-import { UserStatus, UserType } from '../types/interfaces';
+import { Tenant } from '../tenant/entities/tenant.entity';
+import { BaseEntity, UserStatus, UserType } from '../types/interfaces';
 import { Exclude } from 'class-transformer';
 import { Role } from '../roles/role.entity';
 
 @Entity('users')
 @Unique(['email', 'phone', 'tenantId'])
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends BaseEntity {
   @ManyToOne(() => Tenant, { nullable: false })
   tenant: Tenant;
 
@@ -44,13 +38,13 @@ export class User {
   @Column({ type: 'date', nullable: true })
   dateOfBirth: Date | null;
 
-  @Column({ nullable: true })
-  address: string | null;
+  @Column({ type: 'text', nullable: true })
+  address?: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   gender: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   avatarUrl: string | null;
 
   @Column({
@@ -70,23 +64,23 @@ export class User {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   emailVerificationToken: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   passwordResetToken: string | null;
 
   @Column({ type: 'timestamptz', nullable: true })
   passwordResetExpires: Date | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   @Exclude()
   refreshToken: string | null;
 
   @Column({ type: 'timestamptz', nullable: true })
   lastLoginAt: Date | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   @Exclude()
   lastLoginIp: string | null;
 
@@ -101,12 +95,6 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   // Virtual properties
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
@@ -116,7 +104,7 @@ export class User {
     if (!this.roles || this.roles.length === 0) return [];
     return this.roles.reduce((perms, role) => {
       if (role.permissions && role.permissions.length > 0) {
-        return [...perms, ...role.permissions.map(p => p.name)];
+        return [...perms, ...role.permissions.map((p) => p.name)];
       }
       return perms;
     }, []);
@@ -136,11 +124,11 @@ export class User {
   }
 
   hasRole(roleName: string): boolean {
-    return this.roles?.some(role => role.name === roleName) || false;
+    return this.roles?.some((role) => role.name === roleName) || false;
   }
 
   hasAnyRole(roleNames: string[]): boolean {
-    return roleNames.some(roleName => this.hasRole(roleName));
+    return roleNames.some((roleName) => this.hasRole(roleName));
   }
 
   canAccessTenant(tenantId: string): boolean {

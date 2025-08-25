@@ -1,16 +1,9 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { BaseEntity } from '../../types/interfaces'; // Adjust the import path as necessary
 
+// Tenant Entity
 @Entity('tenants')
-export class Tenant {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Tenant extends BaseEntity {
   @Column({ unique: true })
   subdomain: string;
 
@@ -56,10 +49,4 @@ export class Tenant {
 
   @Column({ default: true })
   isActive: boolean;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

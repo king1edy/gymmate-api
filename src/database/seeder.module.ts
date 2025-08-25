@@ -6,9 +6,7 @@ import { Permission } from '../permissions/permission.entity';
 import { User } from '../user/user.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Role, Permission, User]),
-  ],
+  imports: [TypeOrmModule.forFeature([Role, Permission, User])],
   providers: [RbacSeeder],
   exports: [RbacSeeder],
 })

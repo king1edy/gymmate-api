@@ -9,10 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { StaffService } from './staff.service';
-import { Roles } from '../auth/roles.decorator';
+import { Roles } from '../common/decorators/roles.decorator';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Staff - Staff Management Endpoints (Members, Trainers, Schedule, Certifications)')
+@ApiTags(
+  'Staff - Staff Management Endpoints (Members, Trainers, Schedule, Certifications)',
+)
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}

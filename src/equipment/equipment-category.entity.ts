@@ -5,7 +5,7 @@ import {
   ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
-import { Tenant } from '../tenant/tenant.entity';
+import { Tenant } from '../tenant/entities/tenant.entity';
 
 /**
  * Represents a category of equipment in the gym.
@@ -17,7 +17,7 @@ export class EquipmentCategory {
   id: string;
 
   @ManyToOne(() => Tenant, (tenant) => tenant.id)
-  tenant: Tenant;  
+  tenant: Tenant;
 
   @Column()
   name: string;

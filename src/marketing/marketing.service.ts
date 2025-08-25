@@ -5,6 +5,7 @@ import { Campaign } from './campaign.entity';
 import { Promotion } from './promotion.entity';
 import { LeadSource } from './lead-source.entity';
 import { Lead } from './lead.entity';
+import { PromotionFilter } from '../types/interfaces';
 
 @Injectable()
 export class MarketingService {
@@ -45,9 +46,9 @@ export class MarketingService {
   }
 
   // Promotion Management
-  async getPromotions(tenantId: string, filter: any = {}) {
+  async getPromotions(tenantId: string, filter: PromotionFilter = {}) {
     const now = new Date();
-    const { startDate, endDate, tenant, ...safeFilter } = filter;
+    const { startDate, endDate, ...safeFilter } = filter;
     return this.promotionRepository.find({
       where: {
         tenant: { id: tenantId },
@@ -63,7 +64,7 @@ export class MarketingService {
   async getPromotion(id: string) {
     return this.promotionRepository.findOne({
       where: { id },
-      relations: ['campaign', 'gym'],
+      relations: ['campaign', 'tenant'],
     });
   }
 
@@ -100,7 +101,7 @@ export class MarketingService {
   async getLead(id: string) {
     return this.leadRepository.findOne({
       where: { id },
-      relations: ['source', 'assignedTo', 'gym'],
+      relations: ['source', 'assignedTo', 'tenant'],
     });
   }
 
