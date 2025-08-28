@@ -6,15 +6,14 @@ import {
 } from '@nestjs/common';
 import { Role } from '../roles/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm'; // Add In operator
+import { Repository } from 'typeorm'; // Add In operator
 import { Tenant } from './entities/tenant.entity';
 import { User } from '../user/user.entity';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
-import { SubscriptionPlan, SubscriptionStatus } from './types';
+import { SubscriptionPlan, SubscriptionStatus } from '../types/interfaces';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { UserRole } from '../user/dto/UserRole';
 
 @Injectable()
 export class TenantService {

@@ -4,17 +4,27 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ObjectLiteral,
+  Column,
 } from 'typeorm';
 
 // Base Interfaces
 export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @CreateDateColumn()
+
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+}
+
+export abstract class AuditEntity extends BaseEntity {
+  @Column({ name: 'created_by', type: 'varchar', nullable: true })
+  createdBy: string;
+
+  @Column({ name: 'updated_by', type: 'varchar', nullable: true })
+  updatedBy: string;
 }
 
 // Tenant
@@ -198,4 +208,95 @@ export interface EquipmentFilter {
   areaId?: string;
   minConditionRating?: number;
   maxConditionRating?: number;
+}
+
+export enum SubscriptionPlan {
+  STARTER = 'starter',
+  PROFESSIONAL = 'professional',
+  ENTERPRISE = 'enterprise',
+}
+
+export enum SubscriptionStatus {
+  ACTIVE = 'active',
+  TRIALING = 'trialing',
+  PAST_DUE = 'past_due',
+  CANCELED = 'canceled',
+  EXPIRED = 'expired',
+}
+
+export interface BillingInfo {
+  stripeCustomerId?: string;
+  defaultPaymentMethod?: string;
+  billingEmail?: string;
+  billingAddress?: {
+    line1?: string;
+    line2?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  };
+  taxId?: string;
+}
+
+// Events - Base Event Interface
+export interface BaseEvent {
+  id: string;
+  type: string;
+  aggregateId: string;
+  aggregateType: string;
+  version: number;
+  timestamp: Date;
+  data: any;
+  metadata?: {
+    userId?: string;
+    tenantId?: string;
+    correlationId?: string;
+    causationId?: string;
+  };
+}
+
+// Specific Registration Events
+export interface GymTenantRegisteredEvent extends BaseEvent {
+  type: 'GymTenantRegistered';
+  aggregateType: 'Tenant';
+  data: {
+    tenantId: string;
+    name: string;
+    email: string;
+    subscriptionPlan: string;
+    ownerInfo: {
+      firstName: string;
+      lastName: string;
+      email: string;
+    };
+  };
+}
+
+export interface MemberRegisteredEvent extends BaseEvent {
+  type: 'MemberRegistered';
+  aggregateType: 'Member';
+  data: {
+    memberId: string;
+    tenantId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    membershipTypeId: string;
+    joinDate: string;
+  };
+}
+
+export interface StaffRegisteredEvent extends BaseEvent {
+  type: 'StaffRegistered';
+  aggregateType: 'Staff';
+  data: {
+    staffId: string;
+    tenantId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+    isTrainer: boolean;
+  };
 }
