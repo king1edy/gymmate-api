@@ -13,40 +13,63 @@ export class Tenant extends BaseEntity {
   @Column({ type: 'jsonb', default: () => "'{}'" })
   settings: Record<string, any>;
 
-  @Column({ type: 'jsonb', default: () => "'{}'" })
+  @Column({ name: 'business_info', type: 'jsonb', default: () => "'{}'" })
   businessInfo: Record<string, any>;
 
   @Column({ type: 'jsonb', default: () => "'{}'" })
   address: Record<string, any>;
 
-  @Column({ type: 'varchar', length: 50, default: 'starter' })
+  @Column({
+    name: 'subscription_plan',
+    type: 'varchar',
+    length: 50,
+    default: 'starter',
+  })
   subscriptionPlan: string;
 
-  @Column({ type: 'varchar', length: 20, default: 'trial' })
+  @Column({
+    name: 'subscription_status',
+    type: 'varchar',
+    length: 20,
+    default: 'trial',
+  })
   subscriptionStatus: string;
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @Column({
+    name: 'subscription_start_date',
+    type: 'timestamp with time zone',
+    nullable: true,
+  })
   subscriptionStartDate: Date;
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @Column({
+    name: 'subscription_end_date',
+    type: 'timestamp with time zone',
+    nullable: true,
+  })
   subscriptionEndDate: Date;
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @Column({
+    name: 'trial_ends_at',
+    type: 'timestamp with time zone',
+    nullable: true,
+  })
   trialEndsAt: Date;
 
   @Column('text', {
+    name: 'features_enabled',
     array: true,
     default: () =>
       "ARRAY['basic_membership','class_booking','payment_processing','email_notifications']",
   })
   featuresEnabled: string[];
 
-  @Column({ type: 'jsonb', default: () => "'{}'" })
+  @Column({ name: 'limits', type: 'jsonb', default: () => "'{}'" })
   limits: Record<string, any>;
 
-  @Column({ type: 'jsonb', default: () => "'{}'" })
+  @Column({ name: 'billing_info', type: 'jsonb', default: () => "'{}'" })
   billingInfo: Record<string, any>;
 
-  @Column({ default: true })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 }
