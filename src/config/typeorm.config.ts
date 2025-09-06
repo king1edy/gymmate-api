@@ -40,6 +40,7 @@ if (sslFlag && strictSSL && !ca) {
   );
 }
 
+
 const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
@@ -47,12 +48,11 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  // absolutely no auto-sync in prod
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
   entities: ['src/**/*.entity.ts'],
-  // entities: [path.join(__dirname, '/**/*.entity.{ts,js}')],
-  migrations: [path.join(__dirname, '/database/migrations/*.{ts,js}')],
+  migrations: ['src/database/migrations/*.ts'],
+  migrationsTableName: 'migrations',
   ssl: sslFlag
     ? {
         ca,
@@ -62,5 +62,6 @@ const AppDataSource = new DataSource({
 });
 
 console.log('TypeORM CLI using entities glob:', AppDataSource.options.entities);
+console.log('TypeORM CLI using migrations glob:', AppDataSource.options.migrations);
 
 export default AppDataSource;
