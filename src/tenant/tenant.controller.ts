@@ -60,4 +60,6 @@ export class TenantController {
   remove(@Param('id') id: string) {
     return this.tenantService.remove(id);
   }
+  // Additional endpoints for managing tenant-specific settings can be added here
+  // For example, managing subscription plans, features, etc.
 }

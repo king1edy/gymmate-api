@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { PERMISSIONS_KEY } from '../decorators/permissions.decorator';
-import { User } from '../../user/user.entity';
+import { User } from '../../user/entities/user.entity';
 // import { AuthenticatedUser } from '../../types/interfaces';
 
 @Injectable()

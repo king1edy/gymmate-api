@@ -8,7 +8,7 @@ import { Role } from '../roles/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; // Add In operator
 import { Tenant } from './entities/tenant.entity';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { SubscriptionPlan, SubscriptionStatus } from '../types/interfaces';

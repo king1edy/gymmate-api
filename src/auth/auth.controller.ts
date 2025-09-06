@@ -27,7 +27,7 @@ import { RegisterDto } from './dto/register.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserRole } from '../user/dto/UserRole';
@@ -45,7 +45,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'User registered successfully' })
   @ApiResponse({ status: 409, description: 'User already exists' })
   async register(@Body() registerDto: RegisterDto, @Ip() ip: string) {
-    const result = await this.authService.register(registerDto);
+    const result = await this.authService.register(registerDto, ip);
     return {
       message: 'Registration successful',
       user: result.user,

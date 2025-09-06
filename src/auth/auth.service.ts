@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -34,9 +34,12 @@ export class AuthService {
 
   async register(
     registerDto: RegisterDto,
+    ip?: string,
   ): Promise<{ user: User; tokens: AuthTokens }> {
     const { email, password, firstName, lastName, phone, tenantId, userType } =
       registerDto;
+    const user_IP = ip || '';
+    console.info(`User ${email} registered from ${user_IP}`);
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({

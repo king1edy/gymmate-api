@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { Equipment } from './equipment.entity';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Entity('equipment_maintenance')
 export class EquipmentMaintenance {

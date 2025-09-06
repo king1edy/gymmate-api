@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request = require('supertest');
 import { AppModule } from '../src/app.module';
 
 describe('Full Project Integration and Edge Case Tests', () => {
@@ -56,6 +56,7 @@ describe('Full Project Integration and Edge Case Tests', () => {
         role: 'member',
         isActive: true,
       });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const userId = createRes.body.id;
 
       // Update email

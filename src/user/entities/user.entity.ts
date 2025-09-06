@@ -6,10 +6,10 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Tenant } from '../tenant/entities/tenant.entity';
-import { BaseEntity, UserStatus, UserType } from '../types/interfaces';
+import { Tenant } from '../../tenant/entities/tenant.entity';
+import { BaseEntity, UserStatus, UserType } from '../../types/interfaces';
 import { Exclude } from 'class-transformer';
-import { Role } from '../roles/role.entity';
+import { Role } from '../../roles/role.entity';
 
 @Entity('users')
 @Unique(['email', 'phone', 'tenantId'])
@@ -17,19 +17,19 @@ export class User extends BaseEntity {
   @ManyToOne(() => Tenant, { nullable: false })
   tenant: Tenant;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: false })
   tenantId: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   firstName: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   lastName: string;
 
   @Column({ unique: false })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   passwordHash: string;
 
   @Column({ nullable: true })
@@ -38,11 +38,11 @@ export class User extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   dateOfBirth: Date | null;
 
-  @Column({ type: 'text', nullable: true })
-  address?: string | null;
-
   @Column({ type: 'varchar', nullable: true })
   gender: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  address?: string | null;
 
   @Column({ type: 'text', nullable: true })
   avatarUrl: string | null;

@@ -6,7 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { AuthService } from '../auth.service';
 import { JwtPayload } from '../../types/interfaces';
-import { User } from '../../user/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { UserService } from '../../user/user.service';
 
 @Injectable()
